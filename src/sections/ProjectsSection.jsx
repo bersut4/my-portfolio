@@ -2,21 +2,17 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
-import FolderIcon from '@mui/icons-material/Folder'
+import CircularProgress from '@mui/material/CircularProgress'
+import Alert from '@mui/material/Alert'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
-
-const PLACEHOLDER_PROJECTS = [
-  { id: 1, title: '프로젝트 1' },
-  { id: 2, title: '프로젝트 2' },
-  { id: 3, title: '프로젝트 3' },
-]
+import { useProjects } from '../hooks/useProjects'
+import ProjectCard from '../components/ProjectCard'
 
 const ProjectsSection = () => {
   const navigate = useNavigate()
+  const { projects, loading, error } = useProjects(3)
 
   return (
     <Box sx={{ backgroundColor: 'var(--color-bg-primary)', py: 8 }}>
@@ -31,40 +27,30 @@ const ProjectsSection = () => {
           Projects 섹션
         </Typography>
         <Typography variant="body2" sx={{ color: 'var(--color-text-secondary)', mb: 4 }}>
-          여기는 Projects 섹션입니다. 대표작 썸네일 3-4개와 '더 보기' 버튼이 들어갈 예정입니다.
+          대표 프로젝트들을 소개합니다.
         </Typography>
 
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          {PLACEHOLDER_PROJECTS.map((project) => (
-            <Grid size={{ xs: 12, sm: 4 }} key={project.id}>
-              <Card
-                sx={{
-                  height: 160,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  gap: 1,
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease',
-                  '&:hover': {
-                    borderColor: 'var(--color-border-gold)',
-                    boxShadow: '0 0 16px rgba(200,160,86,0.25)',
-                    transform: 'translateY(-2px)',
-                  },
-                }}
-              >
-                <FolderIcon sx={{ fontSize: 40, color: 'var(--color-secondary)' }} />
-                <Typography variant="body2" sx={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>
-                  {project.title}
-                </Typography>
-                <Typography variant="caption" sx={{ color: 'var(--color-text-muted)' }}>
-                  썸네일 예정
-                </Typography>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        {loading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+            <CircularProgress sx={{ color: 'var(--color-secondary)' }} />
+          </Box>
+        )}
+
+        {!loading && error && (
+          <Alert severity="error" sx={{ mb: 4 }}>
+            프로젝트를 불러오는 중 문제가 발생했습니다: {error}
+          </Alert>
+        )}
+
+        {!loading && !error && projects.length > 0 && (
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            {projects.map((project) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={project.id}>
+                <ProjectCard project={project} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
 
         <Box sx={{ textAlign: 'center' }}>
           <Button
