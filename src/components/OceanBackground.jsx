@@ -25,10 +25,10 @@ const SURFACE_END = 0.25
 const DEPTH_END = 0.85
 const SEABED_START = 0.85
 
-const OCEAN_SHALLOW_TOP = '#123047'
-const OCEAN_SHALLOW_BOTTOM = '#0B2233'
-const OCEAN_DEEP_TOP = '#050D14'
-const OCEAN_DEEP_BOTTOM = '#030A0F'
+const OCEAN_SHALLOW_TOP = '#1A4E68'
+const OCEAN_SHALLOW_BOTTOM = '#123047'
+const OCEAN_DEEP_TOP = '#0A1C2B'
+const OCEAN_DEEP_BOTTOM = '#040B12'
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
 const lerp = (a, b, t) => a + (b - a) * t
@@ -52,8 +52,9 @@ const FishSilhouette = ({ size, color }) => (
     <path
       d="M2 10 C 8 0, 24 0, 30 5 L 40 0 L 34 10 L 40 20 L 30 15 C 24 20, 8 20, 2 10 Z"
       fill={color}
-      opacity="0.55"
+      opacity="0.8"
     />
+    <circle cx="8" cy="9" r="1.4" fill="var(--color-primary-dark)" opacity="0.8" />
   </svg>
 )
 
@@ -71,7 +72,7 @@ const OceanBackground = () => {
       const progress = maxScroll > 0 ? clamp(window.scrollY / maxScroll, 0, 1) : 0
 
       const surfaceT = clamp(progress / SURFACE_END, 0, 1)
-      const surfaceY = lerp(22, -4, surfaceT)
+      const surfaceY = lerp(33, -4, surfaceT)
       if (oceanRef.current) oceanRef.current.style.top = `${surfaceY}vh`
       if (waveBackRef.current) waveBackRef.current.style.top = `${surfaceY}vh`
       if (waveFrontRef.current) waveFrontRef.current.style.top = `${surfaceY}vh`
@@ -121,7 +122,7 @@ const OceanBackground = () => {
         background: 'linear-gradient(180deg, var(--color-sky-top) 0%, var(--color-sky-bottom) 100%)',
       }}
     >
-      <Box ref={oceanRef} sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: '22vh' }} />
+      <Box ref={oceanRef} sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: '33vh' }} />
 
       {BUBBLES.map((bubble, i) => (
         <Box
@@ -151,7 +152,7 @@ const OceanBackground = () => {
             animation: `ocean-fish-swim-${fish.direction} ${fish.duration}s linear ${fish.delay}s infinite`,
           }}
         >
-          <Box sx={{ transform: fish.direction === 'rtl' ? 'scaleX(-1)' : 'none' }}>
+          <Box sx={{ transform: fish.direction === 'ltr' ? 'scaleX(-1)' : 'none' }}>
             <FishSilhouette size={fish.size} color={fish.color} />
           </Box>
         </Box>
@@ -165,7 +166,7 @@ const OceanBackground = () => {
           left: 0,
           width: '200%',
           height: 48,
-          top: '22vh',
+          top: '33vh',
           opacity: 0.5,
           animation: 'ocean-wave-drift-back 14s linear infinite',
         }}
@@ -173,7 +174,7 @@ const OceanBackground = () => {
         <svg width="100%" height="100%" viewBox="0 0 2400 48" preserveAspectRatio="none">
           <path
             d="M0 24 C 200 0, 400 48, 600 24 S 1000 0, 1200 24 S 1600 48, 1800 24 S 2200 0, 2400 24 L2400 48 L0 48 Z"
-            fill="var(--color-primary-light)"
+            fill="var(--color-wave-trough)"
           />
         </svg>
       </Box>
@@ -186,14 +187,14 @@ const OceanBackground = () => {
           left: 0,
           width: '200%',
           height: 40,
-          top: '22vh',
+          top: '33vh',
           animation: 'ocean-wave-drift-front 9s linear infinite',
         }}
       >
         <svg width="100%" height="100%" viewBox="0 0 2400 40" preserveAspectRatio="none">
           <path
             d="M0 20 C 150 40, 350 0, 500 20 S 850 40, 1000 20 S 1350 0, 1500 20 S 1850 40, 2000 20 S 2350 0, 2400 20 L2400 40 L0 40 Z"
-            fill="var(--color-bg-secondary)"
+            fill="var(--color-wave-crest)"
           />
         </svg>
       </Box>
@@ -217,20 +218,126 @@ const OceanBackground = () => {
           preserveAspectRatio="none"
           style={{ position: 'absolute', inset: 0 }}
         >
-          <g opacity="0.85">
-            <path d="M120 200 C110 140, 140 110, 130 60 C 150 100, 160 140, 150 200 Z" fill="var(--color-accent)" />
-            <path d="M160 200 C170 150, 150 120, 165 80 C 185 120, 190 160, 180 200 Z" fill="var(--color-badge-hot)" />
-            <path d="M980 200 C 970 130, 1000 100, 995 50 C 1015 95, 1020 140, 1010 200 Z" fill="var(--color-badge-hot)" />
-            <path d="M1030 200 C 1040 150, 1015 115, 1035 75 C 1055 115, 1058 160, 1050 200 Z" fill="var(--color-accent)" />
+          {/* 왼쪽 산호초 군락 (가지형 산호) */}
+          <g opacity="0.95" fill="none" strokeLinecap="round">
+            <path d="M115 200 A 55 38 0 0 1 225 200 Z" fill="var(--color-badge-hot)" stroke="none" />
+            <path d="M130 196 Q 170 176 210 196" stroke="var(--color-sand-dark)" strokeWidth="3" opacity="0.35" />
+            <path d="M136 188 Q 170 168 204 188" stroke="var(--color-sand-dark)" strokeWidth="3" opacity="0.3" />
+
+            <path d="M95 200 L90 150" stroke="var(--color-accent)" strokeWidth="8" />
+            <path d="M90 150 L78 122" stroke="var(--color-accent)" strokeWidth="5" />
+            <path d="M90 150 L98 118" stroke="var(--color-accent)" strokeWidth="5" />
+            <path d="M98 118 L104 96" stroke="var(--color-accent)" strokeWidth="3" />
+
+            <path d="M140 200 L148 148" stroke="var(--color-badge-hot)" strokeWidth="8" />
+            <path d="M148 148 L136 116" stroke="var(--color-badge-hot)" strokeWidth="5" />
+            <path d="M148 148 L160 114" stroke="var(--color-badge-hot)" strokeWidth="5" />
+            <path d="M136 116 L128 92" stroke="var(--color-badge-hot)" strokeWidth="3" />
+            <path d="M160 114 L168 90" stroke="var(--color-badge-hot)" strokeWidth="3" />
+
+            <path d="M185 200 L192 155" stroke="var(--color-accent)" strokeWidth="7" />
+            <path d="M192 155 L182 128" stroke="var(--color-accent)" strokeWidth="4" />
+            <path d="M192 155 L202 130" stroke="var(--color-accent)" strokeWidth="4" />
+
+            <path d="M225 200 L219 152" stroke="var(--color-badge-hot)" strokeWidth="7" />
+            <path d="M219 152 L208 126" stroke="var(--color-badge-hot)" strokeWidth="4" />
+            <path d="M219 152 L230 124" stroke="var(--color-badge-hot)" strokeWidth="4" />
+
+            <circle cx="104" cy="96" r="4" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="128" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="168" cy="90" r="4" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="182" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="230" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" />
           </g>
-          <g transform="translate(560, 170)" opacity="0.9">
-            <ellipse cx="0" cy="0" rx="26" ry="16" fill="var(--color-badge-hot)" />
-            <line x1="-22" y1="4" x2="-40" y2="20" stroke="var(--color-badge-hot)" strokeWidth="4" strokeLinecap="round" />
-            <line x1="-14" y1="12" x2="-26" y2="30" stroke="var(--color-badge-hot)" strokeWidth="4" strokeLinecap="round" />
-            <line x1="22" y1="4" x2="40" y2="20" stroke="var(--color-badge-hot)" strokeWidth="4" strokeLinecap="round" />
-            <line x1="14" y1="12" x2="26" y2="30" stroke="var(--color-badge-hot)" strokeWidth="4" strokeLinecap="round" />
-            <circle cx="-24" cy="-14" r="7" fill="var(--color-badge-hot)" />
-            <circle cx="24" cy="-14" r="7" fill="var(--color-badge-hot)" />
+
+          {/* 해초 (양치식물 스타일) */}
+          <g>
+            <path d="M345 200 Q340 150 348 102" stroke="var(--color-secondary)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <ellipse cx="341" cy="185" rx="7" ry="3" fill="var(--color-secondary)" transform="rotate(-25 341 185)" />
+            <ellipse cx="347" cy="172" rx="7" ry="3" fill="var(--color-secondary)" transform="rotate(20 347 172)" />
+            <ellipse cx="339" cy="158" rx="6" ry="2.5" fill="var(--color-secondary)" transform="rotate(-20 339 158)" />
+            <ellipse cx="345" cy="144" rx="6" ry="2.5" fill="var(--color-secondary)" transform="rotate(20 345 144)" />
+            <ellipse cx="341" cy="128" rx="5" ry="2" fill="var(--color-secondary)" transform="rotate(-18 341 128)" />
+            <ellipse cx="346" cy="114" rx="4.5" ry="2" fill="var(--color-secondary)" transform="rotate(18 346 114)" />
+
+            <path d="M368 200 Q373 160 366 122" stroke="var(--color-secondary)" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.75" />
+            <ellipse cx="371" cy="182" rx="5.5" ry="2.3" fill="var(--color-secondary)" opacity="0.75" transform="rotate(25 371 182)" />
+            <ellipse cx="366" cy="168" rx="5" ry="2.2" fill="var(--color-secondary)" opacity="0.75" transform="rotate(-20 366 168)" />
+            <ellipse cx="370" cy="152" rx="4.5" ry="2" fill="var(--color-secondary)" opacity="0.7" transform="rotate(22 370 152)" />
+            <ellipse cx="366" cy="136" rx="4" ry="1.8" fill="var(--color-secondary)" opacity="0.7" transform="rotate(-18 366 136)" />
+          </g>
+
+          {/* 불가사리 */}
+          <path
+            d="M480 158 L487 172 L502 173 L490 183 L494 198 L480 189 L466 198 L470 183 L458 173 L473 172 Z"
+            fill="var(--color-accent)"
+            opacity="0.9"
+          />
+
+          {/* 게 (귀여운 캐릭터 스타일) */}
+          <g transform="translate(660, 172)" opacity="0.95">
+            {/* 집게발 */}
+            <path
+              d="M-16 -12 C-24 -26 -40 -34 -48 -24 C-54 -14 -48 -2 -36 -6 C-40 2 -32 10 -24 4 C-18 0 -14 -6 -16 -12 Z"
+              fill="var(--color-badge-hot)"
+            />
+            <path
+              d="M16 -12 C24 -26 40 -34 48 -24 C54 -14 48 -2 36 -6 C40 2 32 10 24 4 C18 0 14 -6 16 -12 Z"
+              fill="var(--color-badge-hot)"
+            />
+
+            {/* 다리 (물결) */}
+            <path d="M-26 14 Q-34 18 -30 24 Q-26 30 -34 35" stroke="var(--color-badge-hot)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+            <path d="M-22 20 Q-30 24 -27 30 Q-24 36 -32 40" stroke="var(--color-badge-hot)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+            <path d="M-16 25 Q-23 30 -21 36 Q-19 42 -27 45" stroke="var(--color-badge-hot)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+            <path d="M26 14 Q34 18 30 24 Q26 30 34 35" stroke="var(--color-badge-hot)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+            <path d="M22 20 Q30 24 27 30 Q24 36 32 40" stroke="var(--color-badge-hot)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+            <path d="M16 25 Q23 30 21 36 Q19 42 27 45" stroke="var(--color-badge-hot)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+
+            {/* 몸통 */}
+            <ellipse cx="0" cy="0" rx="30" ry="26" fill="var(--color-badge-hot)" />
+            <path d="M-15 10 A 15 11 0 0 0 15 10 Z" fill="var(--color-accent)" opacity="0.75" />
+
+            {/* 눈 */}
+            <circle cx="-9" cy="-6" r="7" fill="#FFFFFF" />
+            <circle cx="9" cy="-6" r="7" fill="#FFFFFF" />
+            <circle cx="-8" cy="-5" r="3.2" fill="var(--color-primary-dark)" />
+            <circle cx="10" cy="-5" r="3.2" fill="var(--color-primary-dark)" />
+
+            {/* 미소 */}
+            <path d="M-5 6 Q0 10 5 6" stroke="var(--color-primary-dark)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+          </g>
+
+          {/* 오른쪽 산호초 군락 (가지형 산호) */}
+          <g opacity="0.95" fill="none" strokeLinecap="round">
+            <path d="M975 200 A 55 38 0 0 1 1085 200 Z" fill="var(--color-accent)" stroke="none" />
+            <path d="M990 196 Q 1030 176 1070 196" stroke="var(--color-sand-dark)" strokeWidth="3" opacity="0.35" />
+            <path d="M996 188 Q 1030 168 1064 188" stroke="var(--color-sand-dark)" strokeWidth="3" opacity="0.3" />
+
+            <path d="M1105 200 L1110 150" stroke="var(--color-accent)" strokeWidth="8" />
+            <path d="M1110 150 L1122 122" stroke="var(--color-accent)" strokeWidth="5" />
+            <path d="M1110 150 L1102 118" stroke="var(--color-accent)" strokeWidth="5" />
+            <path d="M1102 118 L1096 96" stroke="var(--color-accent)" strokeWidth="3" />
+
+            <path d="M1060 200 L1052 148" stroke="var(--color-badge-hot)" strokeWidth="8" />
+            <path d="M1052 148 L1064 116" stroke="var(--color-badge-hot)" strokeWidth="5" />
+            <path d="M1052 148 L1040 114" stroke="var(--color-badge-hot)" strokeWidth="5" />
+            <path d="M1064 116 L1072 92" stroke="var(--color-badge-hot)" strokeWidth="3" />
+            <path d="M1040 114 L1032 90" stroke="var(--color-badge-hot)" strokeWidth="3" />
+
+            <path d="M1015 200 L1008 155" stroke="var(--color-accent)" strokeWidth="7" />
+            <path d="M1008 155 L1018 128" stroke="var(--color-accent)" strokeWidth="4" />
+            <path d="M1008 155 L998 130" stroke="var(--color-accent)" strokeWidth="4" />
+
+            <path d="M975 200 L981 152" stroke="var(--color-badge-hot)" strokeWidth="7" />
+            <path d="M981 152 L992 126" stroke="var(--color-badge-hot)" strokeWidth="4" />
+            <path d="M981 152 L970 124" stroke="var(--color-badge-hot)" strokeWidth="4" />
+
+            <circle cx="1096" cy="96" r="4" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="1072" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="1032" cy="90" r="4" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="1018" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="970" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" />
           </g>
         </svg>
       </Box>

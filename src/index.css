@@ -30,11 +30,13 @@
   --color-link-hover:     #2DD4BF;
   --color-badge-hot:      #FF6B6B;
 
-  /* Ocean Scene — 하늘·모래 */
-  --color-sky-top:    #24405E;
-  --color-sky-bottom: #0D1B2A;
-  --color-sand:       #7D6A4F;
-  --color-sand-dark:  #5C4D38;
+  /* Ocean Scene — 하늘·파도·모래 */
+  --color-sky-top:     #2C4E6E;
+  --color-sky-bottom:  #122335;
+  --color-wave-crest:  #3A7A98;
+  --color-wave-trough: #1E5470;
+  --color-sand:        #8C7550;
+  --color-sand-dark:   #6B5940;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
