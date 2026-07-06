@@ -6,8 +6,6 @@ const HeroSection = () => (
   <Box
     sx={{
       minHeight: 480,
-      background: 'linear-gradient(135deg, #0A0A14 0%, #1A1428 50%, #0A0A14 100%)',
-      borderBottom: '1px solid var(--color-border-gold)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -17,7 +15,7 @@ const HeroSection = () => (
         content: '""',
         position: 'absolute',
         inset: 0,
-        background: 'radial-gradient(ellipse at 50% 60%, rgba(200,160,86,0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse at 50% 60%, rgba(45,212,191,0.08) 0%, transparent 70%)',
       },
     }}
   >

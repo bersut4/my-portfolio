@@ -71,7 +71,7 @@ const Navbar = () => {
                         sx={{
                           color: 'var(--color-text-primary)',
                           '&.Mui-selected': {
-                            backgroundColor: 'rgba(200,160,86,0.15)',
+                            backgroundColor: 'rgba(45,212,191,0.15)',
                             color: 'var(--color-secondary)',
                           },
                           '&:hover': { color: 'var(--color-secondary)' },
@@ -101,7 +101,7 @@ const Navbar = () => {
                     : '2px solid transparent',
                   borderRadius: 0,
                   pb: 0.5,
-                  '&:hover': { color: 'var(--color-secondary)', borderBottom: '2px solid rgba(200,160,86,0.4)' },
+                  '&:hover': { color: 'var(--color-secondary)', borderBottom: '2px solid rgba(45,212,191,0.4)' },
                 }}
               >
                 {item.label}

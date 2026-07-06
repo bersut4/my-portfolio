@@ -23,7 +23,7 @@ const ProjectCard = ({ project }) => {
         transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease',
         '&:hover': {
           transform: 'translateY(-6px) scale(1.02)',
-          boxShadow: '0 12px 32px rgba(200,160,86,0.25)',
+          boxShadow: '0 12px 32px rgba(45,212,191,0.25)',
           borderColor: 'var(--color-border-gold)',
         },
         '&:active': { transform: 'translateY(-2px) scale(0.99)' },
@@ -43,7 +43,7 @@ const ProjectCard = ({ project }) => {
           height: 300,
           py: 3,
           backgroundColor: 'var(--color-bg-primary)',
-          backgroundImage: 'radial-gradient(circle at 50% 35%, rgba(200,160,86,0.10), transparent 65%)',
+          backgroundImage: 'radial-gradient(circle at 50% 35%, rgba(45,212,191,0.10), transparent 65%)',
           '&:hover .phone-mockup': { transform: 'translateY(-4px) scale(1.03)' },
         }}
       >
@@ -55,7 +55,7 @@ const ProjectCard = ({ project }) => {
             width: 148,
             height: '100%',
             flexShrink: 0,
-            backgroundColor: '#111118',
+            backgroundColor: '#0A1A22',
             borderRadius: '22px',
             border: '3px solid var(--color-border-dark)',
             boxShadow: '0 14px 28px rgba(0,0,0,0.55)',
@@ -73,7 +73,7 @@ const ProjectCard = ({ project }) => {
               width: 44,
               height: 12,
               borderRadius: '8px',
-              backgroundColor: '#0A0A14',
+              backgroundColor: '#071019',
               zIndex: 2,
             }}
           />
@@ -130,9 +130,9 @@ const ProjectCard = ({ project }) => {
                 label={tech}
                 size="small"
                 sx={{
-                  backgroundColor: 'rgba(200,160,86,0.12)',
+                  backgroundColor: 'rgba(45,212,191,0.12)',
                   color: 'var(--color-secondary)',
-                  border: '1px solid rgba(200,160,86,0.3)',
+                  border: '1px solid rgba(45,212,191,0.3)',
                 }}
               />
             )
@@ -151,7 +151,7 @@ const ProjectCard = ({ project }) => {
           sx={{
             color: 'var(--color-secondary)',
             borderColor: 'var(--color-secondary)',
-            '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(200,160,86,0.08)' },
+            '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(45,212,191,0.08)' },
           }}
         >
           Live Demo 보기

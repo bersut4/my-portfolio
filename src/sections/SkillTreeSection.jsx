@@ -13,7 +13,7 @@ const PLACEHOLDER_SKILLS = [
 ]
 
 const SkillTreeSection = () => (
-  <Box sx={{ backgroundColor: 'var(--color-bg-secondary)', py: 8 }}>
+  <Box sx={{ py: 8 }}>
     <Container maxWidth="md">
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
         <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />

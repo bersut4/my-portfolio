@@ -12,7 +12,7 @@ const AboutSection = () => {
   const navigate = useNavigate()
 
   return (
-    <Box sx={{ backgroundColor: 'var(--color-bg-primary)', py: 8 }}>
+    <Box sx={{ py: 8 }}>
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
           <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />
@@ -28,7 +28,7 @@ const AboutSection = () => {
           sx={{
             '&:hover': {
               borderColor: 'var(--color-border-gold)',
-              boxShadow: '0 0 20px rgba(200,160,86,0.15)',
+              boxShadow: '0 0 20px rgba(45,212,191,0.15)',
             },
             transition: 'all 0.25s ease',
           }}

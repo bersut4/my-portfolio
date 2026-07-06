@@ -15,7 +15,7 @@ const ProjectsSection = () => {
   const { projects, loading, error } = useProjects(3)
 
   return (
-    <Box sx={{ backgroundColor: 'var(--color-bg-primary)', py: 8 }}>
+    <Box sx={{ py: 8 }}>
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
           <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />
@@ -61,7 +61,7 @@ const ProjectsSection = () => {
               px: 4,
               color: 'var(--color-secondary)',
               borderColor: 'var(--color-secondary)',
-              '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(200,160,86,0.08)' },
+              '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(45,212,191,0.08)' },
             }}
           >
             더 보기

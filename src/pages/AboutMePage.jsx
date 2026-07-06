@@ -24,7 +24,7 @@ const AboutMePage = () => (
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          '&:hover': { borderColor: 'var(--color-border-gold)', boxShadow: '0 0 20px rgba(200,160,86,0.15)' },
+          '&:hover': { borderColor: 'var(--color-border-gold)', boxShadow: '0 0 20px rgba(45,212,191,0.15)' },
           transition: 'all 0.25s ease',
         }}
       >

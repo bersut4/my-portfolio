@@ -1,34 +1,40 @@
-/* 로스트아크 다크 팬타지 컬러 시스템 */
+/* 딥씨(Deep Sea) 컬러 시스템 */
 :root {
-  /* Primary Colors — 딥 블랙 네이비 */
-  --color-primary:       #0A0A14;
-  --color-primary-light: #1E1E2E;
-  --color-primary-dark:  #050508;
+  /* Primary Colors — 심해 네이비 */
+  --color-primary:       #071019;
+  --color-primary-light: #123047;
+  --color-primary-dark:  #030A0F;
 
-  /* Secondary Colors — 골드·레드 */
-  --color-secondary: #C8A056;
-  --color-accent:    #D42B2B;
+  /* Secondary Colors — 생물발광 틸·산호 */
+  --color-secondary: #2DD4BF;
+  --color-accent:    #FF8A65;
 
   /* Background — 3단계 다크 레이어 */
-  --color-bg-primary:   #0A0A14;
-  --color-bg-secondary: #141420;
-  --color-bg-card:      #1E1E2E;
+  --color-bg-primary:   #071019;
+  --color-bg-secondary: #0B2233;
+  --color-bg-card:      #123047;
 
   /* Text */
-  --color-text-primary:   #FFFFFF;
-  --color-text-secondary: #B0B0C0;
-  --color-text-muted:     #6A6A7A;
+  --color-text-primary:   #E6F1F5;
+  --color-text-secondary: #8FB8C7;
+  --color-text-muted:     #4A6572;
 
   /* Border */
-  --color-border-gold: #5A4520;
-  --color-border-dark: #2E2E3E;
+  --color-border-gold: #1C4A52;
+  --color-border-dark: #16323F;
 
   /* Interactive */
-  --color-button-primary: #C8A056;
-  --color-button-hover:   #E8BA66;
-  --color-link:           #FFFFFF;
-  --color-link-hover:     #C8A056;
-  --color-badge-hot:      #D42B2B;
+  --color-button-primary: #2DD4BF;
+  --color-button-hover:   #5EEAD4;
+  --color-link:           #E6F1F5;
+  --color-link-hover:     #2DD4BF;
+  --color-badge-hot:      #FF6B6B;
+
+  /* Ocean Scene — 하늘·모래 */
+  --color-sky-top:    #24405E;
+  --color-sky-bottom: #0D1B2A;
+  --color-sand:       #7D6A4F;
+  --color-sand-dark:  #5C4D38;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -45,3 +51,35 @@ a {
   text-decoration: none;
 }
 a:hover { color: var(--color-link-hover); }
+
+@keyframes ocean-bubble-rise {
+  0%   { transform: translate(0, 0) scale(0.85); opacity: 0; }
+  10%  { opacity: 0.8; }
+  50%  { transform: translate(8px, -50vh) scale(1); }
+  90%  { opacity: 0.4; }
+  100% { transform: translate(-6px, -105vh) scale(0.9); opacity: 0; }
+}
+
+@keyframes ocean-fish-swim-ltr {
+  from { transform: translateX(-15vw); }
+  to   { transform: translateX(115vw); }
+}
+
+@keyframes ocean-fish-swim-rtl {
+  from { transform: translateX(115vw); }
+  to   { transform: translateX(-15vw); }
+}
+
+@keyframes ocean-wave-drift-front {
+  from { transform: translateY(-50%) translateX(0); }
+  to   { transform: translateY(-50%) translateX(-50%); }
+}
+
+@keyframes ocean-wave-drift-back {
+  from { transform: translateY(-60%) translateX(0); }
+  to   { transform: translateY(-60%) translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-ocean-decor] { animation: none !important; }
+}
