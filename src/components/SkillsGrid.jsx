@@ -1,0 +1,235 @@
+import { useEffect, useState } from 'react'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
+import LinearProgress from '@mui/material/LinearProgress'
+import Chip from '@mui/material/Chip'
+import Tooltip from '@mui/material/Tooltip'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import Stack from '@mui/material/Stack'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import AddIcon from '@mui/icons-material/Add'
+import StarIcon from '@mui/icons-material/Star'
+import { initialSkills, addableSkills, skillCategories, sortByLevelDesc } from '../data/skillsData'
+import { getSkillIcon } from '../utils/skillIcons'
+
+const SkillCard = ({ skill }) => {
+  const [displayLevel, setDisplayLevel] = useState(0)
+  const Icon = getSkillIcon(skill.name)
+  const categoryColor = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDisplayLevel(skill.level), 100)
+    return () => clearTimeout(timer)
+  }, [skill.level])
+
+  return (
+    <Tooltip title={skill.description} arrow placement="top">
+      <Card
+        sx={{
+          height: '100%',
+          borderTop: `3px solid ${categoryColor}`,
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          '&:hover': { transform: 'translateY(-4px)', boxShadow: `0 8px 20px ${categoryColor}33` },
+        }}
+      >
+        <CardContent sx={{ p: 3 }}>
+          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 1.5 }}>
+            <Box sx={{ color: categoryColor, display: 'flex' }}>
+              <Icon />
+            </Box>
+            <Typography variant="subtitle1" sx={{ color: 'var(--color-text-primary)', fontWeight: 700, flex: 1 }}>
+              {skill.name}
+            </Typography>
+            {skill.isMain && <StarIcon sx={{ fontSize: 16, color: 'var(--color-secondary)' }} />}
+          </Stack>
+          <Stack direction="row" sx={{ justifyContent: 'space-between', mb: 0.5 }}>
+            <Chip
+              label={skill.category}
+              size="small"
+              sx={{
+                backgroundColor: `${categoryColor}22`,
+                color: categoryColor,
+                border: `1px solid ${categoryColor}55`,
+                height: 22,
+                fontSize: '0.7rem',
+              }}
+            />
+            <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700 }}>
+              {skill.level}%
+            </Typography>
+          </Stack>
+          <LinearProgress
+            variant="determinate"
+            value={displayLevel}
+            sx={{
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: 'var(--color-border-dark)',
+              '& .MuiLinearProgress-bar': {
+                backgroundColor: categoryColor,
+                transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            }}
+          />
+        </CardContent>
+      </Card>
+    </Tooltip>
+  )
+}
+
+const AddableSkillChip = ({ item, onAdd }) => {
+  const Icon = getSkillIcon(item.name)
+  return (
+    <Chip
+      label={item.name}
+      onClick={() => onAdd(item)}
+      icon={<Icon sx={{ fontSize: '16px !important' }} />}
+      sx={{
+        backgroundColor: 'var(--color-bg-secondary)',
+        color: 'var(--color-text-primary)',
+        border: '1px solid var(--color-border-dark)',
+        cursor: 'pointer',
+        '&:hover': { borderColor: 'var(--color-secondary)' },
+      }}
+    />
+  )
+}
+
+const SkillsGrid = () => {
+  const [skills, setSkills] = useState(initialSkills)
+  const [viewMode, setViewMode] = useState('category')
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const existingNames = new Set(skills.map((skill) => skill.name))
+  const availableToAdd = addableSkills.filter((item) => !existingNames.has(item.name))
+  const categoriesInUse = Object.keys(skillCategories).filter((category) =>
+    skills.some((skill) => skill.category === category)
+  )
+
+  const handleAddSkill = (item) => {
+    setSkills((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        name: item.name,
+        level: 30,
+        category: item.category,
+        description: '새로 추가한 기술이에요.',
+        isMain: false,
+      },
+    ])
+  }
+
+  return (
+    <Box>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{ justifyContent: 'space-between', alignItems: { xs: 'stretch', sm: 'center' }, mb: 3 }}
+      >
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          onChange={(_, next) => next && setViewMode(next)}
+          size="small"
+          sx={{
+            '& .MuiToggleButton-root': { color: 'var(--color-text-secondary)', textTransform: 'none', px: 2 },
+            '& .Mui-selected': {
+              color: 'var(--color-secondary) !important',
+              backgroundColor: 'rgba(45,212,191,0.12) !important',
+            },
+          }}
+        >
+          <ToggleButton value="category">카테고리별</ToggleButton>
+          <ToggleButton value="level">숙련도순</ToggleButton>
+        </ToggleButtonGroup>
+
+        <Button
+          variant="outlined"
+          startIcon={<AddIcon />}
+          onClick={() => setDialogOpen(true)}
+          sx={{
+            color: 'var(--color-secondary)',
+            borderColor: 'var(--color-secondary)',
+            '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(45,212,191,0.08)' },
+          }}
+        >
+          스킬 추가
+        </Button>
+      </Stack>
+
+      {viewMode === 'level' ? (
+        <Grid container spacing={2.5}>
+          {sortByLevelDesc(skills).map((skill) => (
+            <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
+              <SkillCard skill={skill} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Stack spacing={4}>
+          {categoriesInUse.map((category) => (
+            <Box key={category}>
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 2 }}>
+                <Box
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    backgroundColor: skillCategories[category].color,
+                  }}
+                />
+                <Typography variant="subtitle2" sx={{ color: 'var(--color-text-primary)', letterSpacing: 1 }}>
+                  {category.toUpperCase()}
+                </Typography>
+              </Stack>
+              <Grid container spacing={2.5}>
+                {skills
+                  .filter((skill) => skill.category === category)
+                  .map((skill) => (
+                    <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                      <SkillCard skill={skill} />
+                    </Grid>
+                  ))}
+              </Grid>
+            </Box>
+          ))}
+        </Stack>
+      )}
+
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+        slotProps={{
+          paper: { sx: { backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border-dark)' } },
+        }}
+      >
+        <DialogTitle sx={{ color: 'var(--color-text-primary)' }}>스킬 추가</DialogTitle>
+        <DialogContent>
+          {availableToAdd.length === 0 ? (
+            <Typography variant="body2" sx={{ color: 'var(--color-text-secondary)', py: 2 }}>
+              추가할 수 있는 기술을 모두 추가했어요.
+            </Typography>
+          ) : (
+            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, py: 1 }}>
+              {availableToAdd.map((item) => (
+                <AddableSkillChip key={item.name} item={item} onAdd={handleAddSkill} />
+              ))}
+            </Stack>
+          )}
+        </DialogContent>
+      </Dialog>
+    </Box>
+  )
+}
+
+export default SkillsGrid

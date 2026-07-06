@@ -16,6 +16,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import PublicIcon from '@mui/icons-material/Public'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { initialAboutMeData } from '../data/aboutMeData'
+import SkillsGrid from '../components/SkillsGrid'
 
 const InfoRow = ({ icon, label, value }) => (
   <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
@@ -38,7 +39,14 @@ const AboutMePage = () => {
   const photoUrlRef = useRef('')
 
   const { basicInfo, sections } = aboutMeData
-  const activeSection = sections[activeTab]
+  const tabItems = [
+    sections[0],
+    sections[1],
+    { id: 'skills', title: '기술 스택', isSkills: true },
+    sections[2],
+    sections[3],
+  ]
+  const activeItem = tabItems[activeTab]
 
   useEffect(() => () => {
     if (photoUrlRef.current) URL.revokeObjectURL(photoUrlRef.current)
@@ -192,18 +200,18 @@ const AboutMePage = () => {
             '& .MuiTabs-indicator': { backgroundColor: 'var(--color-secondary)' },
           }}
         >
-          {sections.map((section) => (
-            <Tab key={section.id} label={section.title} />
+          {tabItems.map((item) => (
+            <Tab key={item.id} label={item.title} />
           ))}
         </Tabs>
 
         <Card>
           <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
-            <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mb: activeItem.isSkills ? 3 : 2 }}>
               <Typography variant="h5" sx={{ color: 'var(--color-text-primary)' }}>
-                {activeSection.title}
+                {activeItem.title}
               </Typography>
-              {activeSection.showInHome && (
+              {activeItem.showInHome && (
                 <Chip
                   label="홈 화면에도 표시"
                   size="small"
@@ -215,37 +223,44 @@ const AboutMePage = () => {
                 />
               )}
             </Stack>
-            <Typography
-              variant="body1"
-              sx={{ color: 'var(--color-text-secondary)', lineHeight: 1.9, whiteSpace: 'pre-line' }}
-            >
-              {activeSection.content}
-            </Typography>
 
-            {activeSection.timeline && (
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, mt: 3 }}
-              >
-                {activeSection.timeline.map((step, index) => (
-                  <Stack key={step} direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                    <Chip
-                      label={step}
-                      size="small"
-                      sx={{
-                        backgroundColor: 'rgba(45,212,191,0.12)',
-                        color: 'var(--color-secondary)',
-                        border: '1px solid rgba(45,212,191,0.3)',
-                        fontWeight: 600,
-                      }}
-                    />
-                    {index < activeSection.timeline.length - 1 && (
-                      <ArrowForwardIcon sx={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />
-                    )}
+            {activeItem.isSkills ? (
+              <SkillsGrid />
+            ) : (
+              <>
+                <Typography
+                  variant="body1"
+                  sx={{ color: 'var(--color-text-secondary)', lineHeight: 1.9, whiteSpace: 'pre-line' }}
+                >
+                  {activeItem.content}
+                </Typography>
+
+                {activeItem.timeline && (
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, mt: 3 }}
+                  >
+                    {activeItem.timeline.map((step, index) => (
+                      <Stack key={step} direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                        <Chip
+                          label={step}
+                          size="small"
+                          sx={{
+                            backgroundColor: 'rgba(45,212,191,0.12)',
+                            color: 'var(--color-secondary)',
+                            border: '1px solid rgba(45,212,191,0.3)',
+                            fontWeight: 600,
+                          }}
+                        />
+                        {index < activeItem.timeline.length - 1 && (
+                          <ArrowForwardIcon sx={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />
+                        )}
+                      </Stack>
+                    ))}
                   </Stack>
-                ))}
-              </Stack>
+                )}
+              </>
             )}
           </CardContent>
         </Card>
