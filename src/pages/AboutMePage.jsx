@@ -13,6 +13,8 @@ import SchoolIcon from '@mui/icons-material/School'
 import TranslateIcon from '@mui/icons-material/Translate'
 import WorkOutlineIcon from '@mui/icons-material/WorkOutlineOutlined'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import PublicIcon from '@mui/icons-material/Public'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { initialAboutMeData } from '../data/aboutMeData'
 
 const InfoRow = ({ icon, label, value }) => (
@@ -146,6 +148,31 @@ const AboutMePage = () => {
                 <InfoRow icon={<SchoolIcon />} label="학력" value={basicInfo.education} />
                 <InfoRow icon={<TranslateIcon />} label="전공" value={basicInfo.major} />
                 <InfoRow icon={<WorkOutlineIcon />} label="경력" value={basicInfo.experience} />
+                <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
+                  <Box sx={{ color: 'var(--color-secondary)', mt: 0.3 }}>
+                    <PublicIcon />
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: 'var(--color-text-secondary)', letterSpacing: 1 }}>
+                      구사 언어
+                    </Typography>
+                    <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, mt: 0.5 }}>
+                      {basicInfo.languages.map((language) => (
+                        <Chip
+                          key={language}
+                          label={language}
+                          size="small"
+                          sx={{
+                            backgroundColor: 'rgba(255,138,101,0.12)',
+                            color: 'var(--color-accent)',
+                            border: '1px solid rgba(255,138,101,0.35)',
+                            fontWeight: 600,
+                          }}
+                        />
+                      ))}
+                    </Stack>
+                  </Box>
+                </Stack>
               </Stack>
             </Box>
           </CardContent>
@@ -194,6 +221,32 @@ const AboutMePage = () => {
             >
               {activeSection.content}
             </Typography>
+
+            {activeSection.timeline && (
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, mt: 3 }}
+              >
+                {activeSection.timeline.map((step, index) => (
+                  <Stack key={step} direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                    <Chip
+                      label={step}
+                      size="small"
+                      sx={{
+                        backgroundColor: 'rgba(45,212,191,0.12)',
+                        color: 'var(--color-secondary)',
+                        border: '1px solid rgba(45,212,191,0.3)',
+                        fontWeight: 600,
+                      }}
+                    />
+                    {index < activeSection.timeline.length - 1 && (
+                      <ArrowForwardIcon sx={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />
+                    )}
+                  </Stack>
+                ))}
+              </Stack>
+            )}
           </CardContent>
         </Card>
       </Container>
