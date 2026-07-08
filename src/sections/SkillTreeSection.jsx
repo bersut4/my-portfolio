@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -6,6 +7,7 @@ import CardContent from '@mui/material/CardContent'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
+import Fade from '@mui/material/Fade'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
 import { usePortfolio } from '../context/PortfolioContext'
@@ -35,25 +37,27 @@ const SkillTreeSection = () => {
               제가 주로 다루는 기술이에요. 전체 스킬은 About Me 페이지에서 더 볼 수 있어요.
             </Typography>
 
-            <Stack direction="row" spacing={1.5} sx={{ flexWrap: 'wrap', gap: 1.5 }}>
-              {homeData.topSkills.map((skill) => {
-                const Icon = getSkillIcon(skill.name)
-                const color = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
-                return (
-                  <Chip
-                    key={skill.id}
-                    icon={<Icon sx={{ fontSize: '18px !important', color: `${color} !important` }} />}
-                    label={skill.name}
-                    sx={{
-                      backgroundColor: `${color}15`,
-                      color: 'var(--color-text-primary)',
-                      border: `1px solid ${color}55`,
-                      px: 1,
-                    }}
-                  />
-                )
-              })}
-            </Stack>
+            <Fade in key={homeData.updatedAt} timeout={400}>
+              <Stack direction="row" spacing={1.5} aria-label="주요 스킬" sx={{ flexWrap: 'wrap', gap: 1.5 }}>
+                {homeData.topSkills.map((skill) => {
+                  const Icon = getSkillIcon(skill.name)
+                  const color = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
+                  return (
+                    <Chip
+                      key={skill.id}
+                      icon={<Icon sx={{ fontSize: '18px !important', color: `${color} !important` }} />}
+                      label={skill.name}
+                      sx={{
+                        backgroundColor: `${color}15`,
+                        color: 'var(--color-text-primary)',
+                        border: `1px solid ${color}55`,
+                        px: 1,
+                      }}
+                    />
+                  )
+                })}
+              </Stack>
+            </Fade>
           </CardContent>
         </Card>
 
@@ -77,4 +81,4 @@ const SkillTreeSection = () => {
   )
 }
 
-export default SkillTreeSection
+export default memo(SkillTreeSection)

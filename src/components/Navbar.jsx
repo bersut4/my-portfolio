@@ -75,6 +75,7 @@ const Navbar = () => {
       <IconButton
         size="small"
         onClick={() => (loggedInAsAdmin ? logout() : setAdminOpen(true))}
+        aria-label={loggedInAsAdmin ? '관리자 로그아웃' : '관리자 로그인'}
         sx={{
           color: loggedInAsAdmin ? 'var(--color-secondary)' : 'var(--color-text-secondary)',
           opacity: loggedInAsAdmin ? 1 : 0.35,
@@ -107,14 +108,23 @@ const Navbar = () => {
         {isMobile ? (
           <>
             <AdminButton />
-            <IconButton sx={{ color: 'var(--color-secondary)' }} onClick={() => setDrawerOpen(true)}>
+            <IconButton
+              sx={{ color: 'var(--color-secondary)' }}
+              onClick={() => setDrawerOpen(true)}
+              aria-label="메뉴 열기"
+              aria-expanded={drawerOpen}
+            >
               <MenuIcon />
             </IconButton>
             <Drawer
               anchor="right"
               open={drawerOpen}
               onClose={() => setDrawerOpen(false)}
-              PaperProps={{ sx: { backgroundColor: 'var(--color-bg-card)', borderLeft: '1px solid var(--color-border-gold)' } }}
+              PaperProps={{
+                sx: { backgroundColor: 'var(--color-bg-card)', borderLeft: '1px solid var(--color-border-gold)' },
+                role: 'navigation',
+                'aria-label': '모바일 메뉴',
+              }}
             >
               <Box sx={{ width: 220, pt: 2 }}>
                 <List>

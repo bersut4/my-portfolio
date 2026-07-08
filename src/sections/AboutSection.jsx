@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -7,6 +8,7 @@ import CardContent from '@mui/material/CardContent'
 import Stack from '@mui/material/Stack'
 import Grid from '@mui/material/Grid'
 import Chip from '@mui/material/Chip'
+import Fade from '@mui/material/Fade'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import PersonIcon from '@mui/icons-material/Person'
 import { useNavigate } from 'react-router-dom'
@@ -17,7 +19,7 @@ import { getSkillIcon } from '../utils/skillIcons'
 const AboutSection = () => {
   const navigate = useNavigate()
   const { homeData } = usePortfolio()
-  const { homeContent, topSkills, basicInfo } = homeData
+  const { homeContent, topSkills, basicInfo, updatedAt } = homeData
 
   return (
     <Box sx={{ py: 8 }}>
@@ -32,6 +34,7 @@ const AboutSection = () => {
           {basicInfo.name}
         </Typography>
 
+        <Fade in key={updatedAt} timeout={400}>
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {/* 메인 콘텐츠: 개발 스토리 등 요약 */}
           <Grid size={{ xs: 12, md: 8 }}>
@@ -84,6 +87,8 @@ const AboutSection = () => {
                       component="img"
                       src={basicInfo.photo}
                       alt={`${basicInfo.name} 프로필 사진`}
+                      loading="lazy"
+                      decoding="async"
                       sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   ) : (
@@ -108,9 +113,15 @@ const AboutSection = () => {
             </Card>
           </Grid>
         </Grid>
+        </Fade>
 
         {/* 하단: 주요 스킬 */}
-        <Stack direction="row" spacing={1.5} sx={{ flexWrap: 'wrap', gap: 1.5, justifyContent: 'center', mb: 4 }}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          aria-label="주요 스킬"
+          sx={{ flexWrap: 'wrap', gap: 1.5, justifyContent: 'center', mb: 4 }}
+        >
           {topSkills.map((skill) => {
             const Icon = getSkillIcon(skill.name)
             const color = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
@@ -146,4 +157,4 @@ const AboutSection = () => {
   )
 }
 
-export default AboutSection
+export default memo(AboutSection)

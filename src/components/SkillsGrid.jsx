@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -24,7 +24,7 @@ import { addableSkills, skillCategories, sortByLevelDesc } from '../data/skillsD
 import { getSkillIcon } from '../utils/skillIcons'
 import { usePortfolio } from '../context/PortfolioContext'
 
-const SkillCard = ({ skill, onUpdateLevel }) => {
+const SkillCard = memo(function SkillCard({ skill, onUpdateLevel }) {
   const [displayLevel, setDisplayLevel] = useState(0)
   const [isEditing, setIsEditing] = useState(false)
   const [draftLevel, setDraftLevel] = useState(skill.level)
@@ -84,7 +84,12 @@ const SkillCard = ({ skill, onUpdateLevel }) => {
                 <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700, minWidth: 32 }}>
                   {draftLevel}%
                 </Typography>
-                <IconButton size="small" onClick={confirmEdit} sx={{ color: categoryColor }}>
+                <IconButton
+                  size="small"
+                  onClick={confirmEdit}
+                  aria-label={`${skill.name} 숙련도 ${draftLevel}%로 저장`}
+                  sx={{ color: categoryColor }}
+                >
                   <CheckIcon sx={{ fontSize: 16 }} />
                 </IconButton>
               </Stack>
@@ -93,7 +98,12 @@ const SkillCard = ({ skill, onUpdateLevel }) => {
                 <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700 }}>
                   {skill.level}%
                 </Typography>
-                <IconButton size="small" onClick={startEdit} sx={{ color: 'var(--color-text-secondary)' }}>
+                <IconButton
+                  size="small"
+                  onClick={startEdit}
+                  aria-label={`${skill.name} 숙련도 수정`}
+                  sx={{ color: 'var(--color-text-secondary)' }}
+                >
                   <EditIcon sx={{ fontSize: 14 }} />
                 </IconButton>
               </Stack>
@@ -105,6 +115,8 @@ const SkillCard = ({ skill, onUpdateLevel }) => {
               value={draftLevel}
               onChange={(_, value) => setDraftLevel(value)}
               size="small"
+              aria-label={`${skill.name} 숙련도`}
+              valueLabelDisplay="auto"
               sx={{ color: categoryColor }}
             />
           ) : (
@@ -126,15 +138,17 @@ const SkillCard = ({ skill, onUpdateLevel }) => {
       </Card>
     </Tooltip>
   )
-}
+})
 
-const AddableSkillChip = ({ item, onAdd }) => {
+const AddableSkillChip = memo(function AddableSkillChip({ item, onAdd }) {
   const Icon = getSkillIcon(item.name)
   return (
     <Chip
       label={item.name}
       onClick={() => onAdd(item)}
       icon={<Icon sx={{ fontSize: '16px !important' }} />}
+      role="button"
+      aria-label={`${item.name} 기술 추가`}
       sx={{
         backgroundColor: 'var(--color-bg-secondary)',
         color: 'var(--color-text-primary)',
@@ -144,7 +158,7 @@ const AddableSkillChip = ({ item, onAdd }) => {
       }}
     />
   )
-}
+})
 
 const SkillsGrid = () => {
   const { aboutMeData, addSkill, updateSkillLevel } = usePortfolio()
@@ -152,11 +166,17 @@ const SkillsGrid = () => {
   const [viewMode, setViewMode] = useState('category')
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const existingNames = new Set(skills.map((skill) => skill.name))
-  const availableToAdd = addableSkills.filter((item) => !existingNames.has(item.name))
-  const categoriesInUse = Object.keys(skillCategories).filter((category) =>
-    skills.some((skill) => skill.category === category)
+  const availableToAdd = useMemo(() => {
+    const existingNames = new Set(skills.map((skill) => skill.name))
+    return addableSkills.filter((item) => !existingNames.has(item.name))
+  }, [skills])
+
+  const categoriesInUse = useMemo(
+    () => Object.keys(skillCategories).filter((category) => skills.some((skill) => skill.category === category)),
+    [skills]
   )
+
+  const sortedByLevel = useMemo(() => sortByLevelDesc(skills), [skills])
 
   return (
     <Box>
@@ -170,6 +190,7 @@ const SkillsGrid = () => {
           exclusive
           onChange={(_, next) => next && setViewMode(next)}
           size="small"
+          aria-label="스킬 정렬 방식"
           sx={{
             '& .MuiToggleButton-root': { color: 'var(--color-text-secondary)', textTransform: 'none', px: 2 },
             '& .Mui-selected': {
@@ -178,8 +199,8 @@ const SkillsGrid = () => {
             },
           }}
         >
-          <ToggleButton value="category">카테고리별</ToggleButton>
-          <ToggleButton value="level">숙련도순</ToggleButton>
+          <ToggleButton value="category" aria-label="카테고리별로 정렬">카테고리별</ToggleButton>
+          <ToggleButton value="level" aria-label="숙련도순으로 정렬">숙련도순</ToggleButton>
         </ToggleButtonGroup>
 
         <Button
@@ -198,7 +219,7 @@ const SkillsGrid = () => {
 
       {viewMode === 'level' ? (
         <Grid container spacing={2.5}>
-          {sortByLevelDesc(skills).map((skill) => (
+          {sortedByLevel.map((skill) => (
             <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
               <SkillCard skill={skill} onUpdateLevel={updateSkillLevel} />
             </Grid>

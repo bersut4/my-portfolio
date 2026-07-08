@@ -54,6 +54,11 @@ a {
 }
 a:hover { color: var(--color-link-hover); }
 
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
 @keyframes ocean-bubble-rise {
   0%   { transform: translate(0, 0) scale(0.85); opacity: 0; }
   10%  { opacity: 0.8; }

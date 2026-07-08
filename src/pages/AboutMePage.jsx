@@ -11,6 +11,7 @@ import Chip from '@mui/material/Chip'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import Fade from '@mui/material/Fade'
 import SchoolIcon from '@mui/icons-material/School'
 import TranslateIcon from '@mui/icons-material/Translate'
 import WorkOutlineIcon from '@mui/icons-material/WorkOutlineOutlined'
@@ -20,6 +21,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditIcon from '@mui/icons-material/Edit'
 import { usePortfolio } from '../context/PortfolioContext'
 import SkillsGrid from '../components/SkillsGrid'
+
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024
 
 const InfoRow = ({ icon, label, value }) => (
   <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
@@ -36,7 +39,7 @@ const InfoRow = ({ icon, label, value }) => (
 )
 
 const AboutMePage = () => {
-  const { aboutMeData, updateSection, updatePhoto } = usePortfolio()
+  const { aboutMeData, updateSection, updatePhoto, notify } = usePortfolio()
   const [activeTab, setActiveTab] = useState(0)
   const [editingId, setEditingId] = useState(null)
   const [draftContent, setDraftContent] = useState('')
@@ -72,7 +75,17 @@ const AboutMePage = () => {
 
   const handlePhotoChange = (event) => {
     const file = event.target.files?.[0]
+    event.target.value = ''
     if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      notify('이미지 파일만 업로드할 수 있어요.', 'error')
+      return
+    }
+    if (file.size > MAX_PHOTO_SIZE) {
+      notify('사진 용량은 5MB 이하여야 해요.', 'error')
+      return
+    }
 
     if (photoUrlRef.current) URL.revokeObjectURL(photoUrlRef.current)
     const nextUrl = URL.createObjectURL(file)
@@ -128,6 +141,8 @@ const AboutMePage = () => {
                     component="img"
                     src={basicInfo.photo}
                     alt={`${basicInfo.name} 프로필 사진`}
+                    loading="lazy"
+                    decoding="async"
                     sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 ) : (
@@ -141,6 +156,7 @@ const AboutMePage = () => {
                 component="label"
                 htmlFor="about-photo-upload"
                 size="small"
+                aria-label="프로필 사진 업로드"
                 sx={{
                   position: 'absolute',
                   bottom: 0,
@@ -206,6 +222,7 @@ const AboutMePage = () => {
           onChange={handleTabChange}
           variant="scrollable"
           scrollButtons="auto"
+          aria-label="About Me 섹션 탭"
           sx={{
             mb: 2,
             borderBottom: '1px solid var(--color-border-dark)',
@@ -215,19 +232,29 @@ const AboutMePage = () => {
           }}
         >
           {tabItems.map((item) => (
-            <Tab key={item.id} label={item.title} />
+            <Tab key={item.id} label={item.title} id={`about-tab-${item.id}`} aria-controls={`about-tabpanel-${item.id}`} />
           ))}
         </Tabs>
 
         <Card>
-          <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+          <CardContent
+            sx={{ p: { xs: 3, sm: 4 } }}
+            role="tabpanel"
+            id={`about-tabpanel-${activeItem.id}`}
+            aria-labelledby={`about-tab-${activeItem.id}`}
+          >
             <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mb: activeItem.isSkills ? 3 : 2 }}>
               <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                 <Typography variant="h5" sx={{ color: 'var(--color-text-primary)' }}>
                   {activeItem.title}
                 </Typography>
                 {!activeItem.isSkills && editingId !== activeItem.id && (
-                  <IconButton size="small" onClick={startEditing} sx={{ color: 'var(--color-text-secondary)' }}>
+                  <IconButton
+                    size="small"
+                    onClick={startEditing}
+                    aria-label={`${activeItem.title} 수정`}
+                    sx={{ color: 'var(--color-text-secondary)' }}
+                  >
                     <EditIcon sx={{ fontSize: 18 }} />
                   </IconButton>
                 )}
@@ -248,32 +275,37 @@ const AboutMePage = () => {
             {activeItem.isSkills ? (
               <SkillsGrid />
             ) : editingId === activeItem.id ? (
-              <Stack spacing={2}>
-                <TextField
-                  value={draftContent}
-                  onChange={(event) => setDraftContent(event.target.value)}
-                  multiline
-                  minRows={4}
-                  fullWidth
-                  sx={{
-                    '& .MuiOutlinedInput-root': { color: 'var(--color-text-primary)' },
-                  }}
-                />
-                <Stack direction="row" spacing={1.5} sx={{ justifyContent: 'flex-end' }}>
-                  <Button onClick={cancelEditing} sx={{ color: 'var(--color-text-secondary)' }}>
-                    취소
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={saveEditing}
-                    sx={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-primary-dark)' }}
-                  >
-                    저장
-                  </Button>
+              <Fade in timeout={250}>
+                <Stack spacing={2}>
+                  <TextField
+                    value={draftContent}
+                    onChange={(event) => setDraftContent(event.target.value)}
+                    multiline
+                    minRows={4}
+                    fullWidth
+                    autoFocus
+                    aria-label={`${activeItem.title} 내용 편집`}
+                    sx={{
+                      '& .MuiOutlinedInput-root': { color: 'var(--color-text-primary)' },
+                    }}
+                  />
+                  <Stack direction="row" spacing={1.5} sx={{ justifyContent: 'flex-end' }}>
+                    <Button onClick={cancelEditing} sx={{ color: 'var(--color-text-secondary)' }}>
+                      취소
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={saveEditing}
+                      sx={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-primary-dark)' }}
+                    >
+                      저장
+                    </Button>
+                  </Stack>
                 </Stack>
-              </Stack>
+              </Fade>
             ) : (
-              <>
+              <Fade in key={`${activeItem.id}-${activeItem.content}`} timeout={300}>
+              <Box>
                 <Typography
                   variant="body1"
                   sx={{ color: 'var(--color-text-secondary)', lineHeight: 1.9, whiteSpace: 'pre-line' }}
@@ -306,7 +338,8 @@ const AboutMePage = () => {
                     ))}
                   </Stack>
                 )}
-              </>
+              </Box>
+              </Fade>
             )}
           </CardContent>
         </Card>
