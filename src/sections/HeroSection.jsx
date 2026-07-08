@@ -6,12 +6,17 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import PersonIcon from '@mui/icons-material/Person'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
 import { usePortfolio } from '../context/PortfolioContext'
+
+const MOBILE_QUERY = '(max-width:767px)'
+const TABLET_UP_QUERY = '(min-width:768px)'
+const DESKTOP_UP_QUERY = '(min-width:1200px)'
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/bersut4/', icon: GitHubIcon, external: true },
@@ -26,18 +31,23 @@ const scrollPastHero = () => {
   window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' })
 }
 
+const TOUCH_TARGET = { minWidth: 44, minHeight: 44 }
+
 const HeroSection = () => {
   const { homeData } = usePortfolio()
   const { basicInfo } = homeData
+  const isMobile = useMediaQuery(MOBILE_QUERY)
 
   return (
     <Box
       sx={{
-        minHeight: { xs: 560, md: 640 },
+        minHeight: 'auto',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
+        [`@media ${TABLET_UP_QUERY}`]: { minHeight: 560 },
+        [`@media ${DESKTOP_UP_QUERY}`]: { minHeight: 640 },
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -47,9 +57,27 @@ const HeroSection = () => {
         },
       }}
     >
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: { xs: 8, md: 10 } }}>
-        <Grid container spacing={{ xs: 6, md: 4 }} sx={{ alignItems: 'center' }}>
-          <Grid size={{ xs: 12, md: 7 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          position: 'relative',
+          zIndex: 1,
+          py: 6,
+          [`@media ${TABLET_UP_QUERY}`]: { py: 8 },
+          [`@media ${DESKTOP_UP_QUERY}`]: { py: 10 },
+        }}
+      >
+        <Grid
+          container
+          sx={{
+            alignItems: 'center',
+            rowGap: 5,
+            columnGap: 0,
+            [`@media ${TABLET_UP_QUERY}`]: { columnGap: 3 },
+            [`@media ${DESKTOP_UP_QUERY}`]: { columnGap: 4 },
+          }}
+        >
+          <Grid size={isMobile ? 12 : 7} sx={{ textAlign: isMobile ? 'center' : 'left' }}>
             <Box
               data-hero-decor
               sx={{
@@ -61,13 +89,20 @@ const HeroSection = () => {
                 borderRadius: 999,
                 border: '1px solid rgba(45,212,191,0.35)',
                 backgroundColor: 'rgba(45,212,191,0.08)',
-                mb: 3,
+                mb: { xs: 2, md: 3 },
                 animation: 'hero-fade-up 0.6s ease-out both',
               }}
             >
               <Typography
                 variant="overline"
-                sx={{ color: 'var(--color-secondary)', letterSpacing: 4, fontSize: '0.75rem', lineHeight: 1 }}
+                sx={{
+                  color: 'var(--color-secondary)',
+                  letterSpacing: 4,
+                  lineHeight: 1,
+                  fontSize: '0.7rem',
+                  [`@media ${TABLET_UP_QUERY}`]: { fontSize: '0.75rem' },
+                  [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '0.8rem' },
+                }}
               >
                 {basicInfo.name} · WEB DESIGNER
               </Typography>
@@ -77,11 +112,14 @@ const HeroSection = () => {
               variant="h1"
               data-hero-decor
               sx={{
-                fontSize: { xs: '2rem', sm: '2.6rem', md: '3.25rem' },
                 fontWeight: 800,
-                lineHeight: 1.25,
-                mb: 3,
+                lineHeight: 1.3,
+                mb: { xs: 2, md: 3 },
                 letterSpacing: 0.5,
+                fontSize: '2rem',
+                [`@media ${TABLET_UP_QUERY}`]: { fontSize: '2.25rem', lineHeight: 1.3 },
+                '@media (min-width:900px)': { fontSize: '2.75rem', lineHeight: 1.28 },
+                [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '3.5rem', lineHeight: 1.22 },
                 background:
                   'linear-gradient(90deg, var(--color-text-primary) 20%, var(--color-secondary) 70%, var(--color-accent) 100%)',
                 backgroundClip: 'text',
@@ -99,8 +137,8 @@ const HeroSection = () => {
                 width: 60,
                 height: 2,
                 backgroundColor: 'var(--color-secondary)',
-                mx: { xs: 'auto', md: 0 },
-                mb: 3,
+                mx: isMobile ? 'auto' : 0,
+                mb: { xs: 2, md: 3 },
               }}
             />
 
@@ -109,11 +147,13 @@ const HeroSection = () => {
               data-hero-decor
               sx={{
                 color: 'var(--color-text-secondary)',
-                fontSize: '1.1rem',
-                lineHeight: 1.9,
+                lineHeight: 1.8,
                 maxWidth: 480,
-                mx: { xs: 'auto', md: 0 },
-                mb: 5,
+                mx: isMobile ? 'auto' : 0,
+                mb: { xs: 4, md: 5 },
+                fontSize: '0.95rem',
+                [`@media ${TABLET_UP_QUERY}`]: { fontSize: '1.05rem', lineHeight: 1.85 },
+                [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '1.1rem', lineHeight: 1.9 },
                 animation: 'hero-fade-up 0.6s ease-out 0.3s both',
               }}
             >
@@ -121,22 +161,24 @@ const HeroSection = () => {
             </Typography>
 
             <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={2}
+              direction={isMobile ? 'column' : 'row'}
+              spacing={1.5}
               data-hero-decor
               sx={{
-                justifyContent: { xs: 'center', md: 'flex-start' },
+                justifyContent: isMobile ? 'center' : 'flex-start',
                 animation: 'hero-fade-up 0.6s ease-out 0.45s both',
               }}
             >
               <Button
                 variant="contained"
                 size="large"
+                fullWidth={isMobile}
                 endIcon={<ArrowForwardIcon />}
                 onClick={() => scrollToSection('projects-section')}
                 data-hero-decor
                 sx={{
                   px: 4,
+                  ...TOUCH_TARGET,
                   borderRadius: 999,
                   animation: 'hero-cta-pulse 2.4s ease-out infinite',
                   transition: 'transform 0.25s ease, box-shadow 0.25s ease',
@@ -148,9 +190,11 @@ const HeroSection = () => {
               <Button
                 variant="outlined"
                 size="large"
+                fullWidth={isMobile}
                 onClick={() => scrollToSection('contact-section')}
                 sx={{
                   px: 4,
+                  ...TOUCH_TARGET,
                   borderRadius: 999,
                   color: 'var(--color-secondary)',
                   borderColor: 'var(--color-secondary)',
@@ -171,7 +215,7 @@ const HeroSection = () => {
               spacing={1.5}
               data-hero-decor
               sx={{
-                justifyContent: { xs: 'center', md: 'flex-start' },
+                justifyContent: isMobile ? 'center' : 'flex-start',
                 mt: 3,
                 animation: 'hero-fade-up 0.6s ease-out 0.55s both',
               }}
@@ -184,6 +228,7 @@ const HeroSection = () => {
                     {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     aria-label={label}
                     sx={{
+                      ...TOUCH_TARGET,
                       color: 'var(--color-text-secondary)',
                       border: '1px solid var(--color-border-dark)',
                       transition: 'transform 0.25s ease, color 0.25s ease, border-color 0.25s ease',
@@ -201,13 +246,15 @@ const HeroSection = () => {
             </Stack>
           </Grid>
 
-          <Grid size={{ xs: 12, md: 5 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid size={isMobile ? 12 : 5} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Box
               data-hero-decor
               sx={{
                 position: 'relative',
-                width: { xs: 200, md: 260 },
-                height: { xs: 200, md: 260 },
+                width: 180,
+                height: 180,
+                [`@media ${TABLET_UP_QUERY}`]: { width: 220, height: 220 },
+                [`@media ${DESKTOP_UP_QUERY}`]: { width: 260, height: 260 },
                 animation: 'hero-fade-up 0.7s ease-out 0.2s both',
               }}
             >
@@ -253,7 +300,14 @@ const HeroSection = () => {
                       sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   ) : (
-                    <PersonIcon sx={{ fontSize: 96, color: 'var(--color-text-secondary)' }} />
+                    <PersonIcon
+                      sx={{
+                        fontSize: 72,
+                        color: 'var(--color-text-secondary)',
+                        [`@media ${TABLET_UP_QUERY}`]: { fontSize: 84 },
+                        [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: 96 },
+                      }}
+                    />
                   )}
                 </Box>
               </Box>
@@ -267,9 +321,10 @@ const HeroSection = () => {
         aria-label="다음 섹션으로 스크롤"
         data-hero-decor
         sx={{
+          ...TOUCH_TARGET,
           position: 'absolute',
           left: '50%',
-          bottom: 24,
+          bottom: { xs: 12, md: 24 },
           transform: 'translateX(-50%)',
           color: 'var(--color-secondary)',
           animation: 'hero-bounce 2s ease-in-out infinite',
