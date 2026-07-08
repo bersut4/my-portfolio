@@ -37,12 +37,14 @@ const HeroSection = () => {
 
   return (
     <Box
+      id="hero-section"
       sx={{
         minHeight: 'auto',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
+        scrollMarginTop: 80,
         [`@media ${TABLET_UP_QUERY}`]: { minHeight: 560 },
         [`@media ${DESKTOP_UP_QUERY}`]: { minHeight: 640 },
         '&::before': {

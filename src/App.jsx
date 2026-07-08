@@ -1,11 +1,13 @@
-import { Suspense, lazy } from 'react'
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { Suspense, lazy, useEffect } from 'react'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import Navbar from './components/Navbar'
 import HomePage from './pages/HomePage'
 import ErrorBoundary from './components/ErrorBoundary'
 import FeedbackSnackbar from './components/FeedbackSnackbar'
+import ScrollProgressBar from './components/ScrollProgressBar'
+import SectionDotNav from './components/SectionDotNav'
 import { PortfolioProvider } from './context/PortfolioContext'
 import { AdminProvider } from './context/AdminContext'
 
@@ -18,13 +20,26 @@ const RouteLoadingFallback = () => (
   </Box>
 )
 
+const ScrollToTopOnRouteChange = () => {
+  const location = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  return null
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <AdminProvider>
         <PortfolioProvider>
           <HashRouter>
+            <ScrollProgressBar />
             <Navbar />
+            <ScrollToTopOnRouteChange />
+            <SectionDotNav />
             <Suspense fallback={<RouteLoadingFallback />}>
               <Routes>
                 <Route path="/" element={<HomePage />} />

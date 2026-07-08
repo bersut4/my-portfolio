@@ -11,7 +11,6 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Box from '@mui/material/Box'
-import MenuIcon from '@mui/icons-material/Menu'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import Dialog from '@mui/material/Dialog'
@@ -25,12 +24,42 @@ import Tooltip from '@mui/material/Tooltip'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useAdmin } from '../context/AdminContext'
 import { MOBILE_QUERY } from '../utils/breakpoints'
+import { useScrollDirection } from '../hooks/useScrollDirection'
 
 const NAV_ITEMS = [
   { label: 'Home',       path: '/' },
   { label: 'About Me',   path: '/about' },
   { label: 'Projects',   path: '/projects' },
 ]
+
+const HAMBURGER_BAR_SX = {
+  position: 'absolute',
+  left: 0,
+  top: '50%',
+  width: '100%',
+  height: 2,
+  borderRadius: 1,
+  backgroundColor: 'currentColor',
+  transition: 'transform 0.3s ease, opacity 0.2s ease',
+}
+
+const AnimatedHamburgerIcon = ({ open }) => (
+  <Box sx={{ width: 22, height: 16, position: 'relative' }}>
+    <Box
+      sx={{
+        ...HAMBURGER_BAR_SX,
+        transform: open ? 'translateY(-50%) rotate(45deg)' : 'translateY(calc(-50% - 7px)) rotate(0deg)',
+      }}
+    />
+    <Box sx={{ ...HAMBURGER_BAR_SX, transform: 'translateY(-50%)', opacity: open ? 0 : 1 }} />
+    <Box
+      sx={{
+        ...HAMBURGER_BAR_SX,
+        transform: open ? 'translateY(-50%) rotate(-45deg)' : 'translateY(calc(-50% + 7px)) rotate(0deg)',
+      }}
+    />
+  </Box>
+)
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -43,6 +72,8 @@ const Navbar = () => {
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
   const [loginLoading, setLoginLoading] = useState(false)
+  const scrollHidden = useScrollDirection()
+  const hideHeader = scrollHidden && !drawerOpen && !adminOpen
 
   const handleNav = (path) => {
     navigate(path)
@@ -88,7 +119,15 @@ const Navbar = () => {
 
   return (
     <>
-    <AppBar position="sticky" elevation={0}>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        top: 0,
+        transform: hideHeader ? 'translateY(-100%)' : 'translateY(0)',
+        transition: 'transform 0.3s ease',
+      }}
+    >
       <Toolbar sx={{ maxWidth: 1200, width: '100%', mx: 'auto', px: { xs: 2, md: 4 } }}>
         <Typography
           variant="h6"
@@ -109,11 +148,11 @@ const Navbar = () => {
             <AdminButton />
             <IconButton
               sx={{ color: 'var(--color-secondary)' }}
-              onClick={() => setDrawerOpen(true)}
-              aria-label="메뉴 열기"
+              onClick={() => setDrawerOpen((prev) => !prev)}
+              aria-label={drawerOpen ? '메뉴 닫기' : '메뉴 열기'}
               aria-expanded={drawerOpen}
             >
-              <MenuIcon />
+              <AnimatedHamburgerIcon open={drawerOpen} />
             </IconButton>
             <Drawer
               anchor="right"
