@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
@@ -6,13 +5,21 @@ import Typography from '@mui/material/Typography'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import PersonIcon from '@mui/icons-material/Person'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import EmailIcon from '@mui/icons-material/Email'
 import { usePortfolio } from '../context/PortfolioContext'
 
-const scrollToProjects = () => {
-  document.getElementById('projects-section')?.scrollIntoView({ behavior: 'smooth' })
+const SOCIAL_LINKS = [
+  { label: 'GitHub', href: 'https://github.com/bersut4/', icon: GitHubIcon, external: true },
+  { label: '이메일', href: 'mailto:bersut5@gmail.com', icon: EmailIcon, external: false },
+]
+
+const scrollToSection = (id) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
 const scrollPastHero = () => {
@@ -20,7 +27,6 @@ const scrollPastHero = () => {
 }
 
 const HeroSection = () => {
-  const navigate = useNavigate()
   const { homeData } = usePortfolio()
   const { basicInfo } = homeData
 
@@ -127,9 +133,12 @@ const HeroSection = () => {
                 variant="contained"
                 size="large"
                 endIcon={<ArrowForwardIcon />}
-                onClick={scrollToProjects}
+                onClick={() => scrollToSection('projects-section')}
+                data-hero-decor
                 sx={{
                   px: 4,
+                  borderRadius: 999,
+                  animation: 'hero-cta-pulse 2.4s ease-out infinite',
                   transition: 'transform 0.25s ease, box-shadow 0.25s ease',
                   '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
                 }}
@@ -139,9 +148,10 @@ const HeroSection = () => {
               <Button
                 variant="outlined"
                 size="large"
-                onClick={() => navigate('/about')}
+                onClick={() => scrollToSection('contact-section')}
                 sx={{
                   px: 4,
+                  borderRadius: 999,
                   color: 'var(--color-secondary)',
                   borderColor: 'var(--color-secondary)',
                   transition: 'transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease',
@@ -152,8 +162,42 @@ const HeroSection = () => {
                   },
                 }}
               >
-                더 알아보기
+                연락하기
               </Button>
+            </Stack>
+
+            <Stack
+              direction="row"
+              spacing={1.5}
+              data-hero-decor
+              sx={{
+                justifyContent: { xs: 'center', md: 'flex-start' },
+                mt: 3,
+                animation: 'hero-fade-up 0.6s ease-out 0.55s both',
+              }}
+            >
+              {SOCIAL_LINKS.map(({ label, href, icon: Icon, external }) => (
+                <Tooltip key={label} title={label}>
+                  <IconButton
+                    component="a"
+                    href={href}
+                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    aria-label={label}
+                    sx={{
+                      color: 'var(--color-text-secondary)',
+                      border: '1px solid var(--color-border-dark)',
+                      transition: 'transform 0.25s ease, color 0.25s ease, border-color 0.25s ease',
+                      '&:hover': {
+                        color: 'var(--color-secondary)',
+                        borderColor: 'var(--color-secondary)',
+                        transform: 'translateY(-3px)',
+                      },
+                    }}
+                  >
+                    <Icon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              ))}
             </Stack>
           </Grid>
 

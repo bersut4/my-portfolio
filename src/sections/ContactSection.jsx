@@ -11,7 +11,7 @@ import GitHubIcon from '@mui/icons-material/GitHub'
 import SendIcon from '@mui/icons-material/Send'
 
 const ContactSection = () => (
-  <Box sx={{ py: 8 }}>
+  <Box id="contact-section" sx={{ py: 8, scrollMarginTop: 80 }}>
     <Container maxWidth="md">
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
         <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />
@@ -31,14 +31,26 @@ const ContactSection = () => (
           <Stack spacing={2}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <EmailIcon sx={{ color: 'var(--color-secondary)' }} />
-              <Typography variant="body2" sx={{ color: 'var(--color-text-secondary)' }}>
-                이메일 주소가 들어갈 예정입니다.
+              <Typography
+                component="a"
+                href="mailto:bersut5@gmail.com"
+                variant="body2"
+                sx={{ color: 'var(--color-text-secondary)', '&:hover': { color: 'var(--color-secondary)' } }}
+              >
+                bersut5@gmail.com
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <GitHubIcon sx={{ color: 'var(--color-secondary)' }} />
-              <Typography variant="body2" sx={{ color: 'var(--color-text-secondary)' }}>
-                GitHub 링크가 들어갈 예정입니다.
+              <Typography
+                component="a"
+                href="https://github.com/bersut4/"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="body2"
+                sx={{ color: 'var(--color-text-secondary)', '&:hover': { color: 'var(--color-secondary)' } }}
+              >
+                github.com/bersut4
               </Typography>
             </Box>
           </Stack>
