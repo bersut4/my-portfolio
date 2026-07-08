@@ -145,9 +145,13 @@ const AboutSection = () => {
           <Button
             variant="contained"
             color="primary"
+            size="large"
             endIcon={<ArrowForwardIcon />}
             onClick={() => navigate('/about')}
-            sx={{ px: 4 }}
+            sx={{
+              transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+              '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
+            }}
           >
             더 알아보기
           </Button>

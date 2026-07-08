@@ -69,8 +69,13 @@ const ContactSection = () => (
             <Button
               variant="contained"
               color="primary"
+              size="large"
               endIcon={<SendIcon />}
-              sx={{ alignSelf: 'flex-end', px: 4 }}
+              sx={{
+                alignSelf: 'flex-end',
+                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
+              }}
             >
               보내기
             </Button>

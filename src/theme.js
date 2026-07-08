@@ -48,6 +48,26 @@ const theme = createTheme({
           color: '#071019',
           '&:hover': { backgroundColor: '#5EEAD4' },
         },
+        sizeLarge: {
+          minHeight: 44,
+          paddingLeft: 32,
+          paddingRight: 32,
+          borderRadius: 999,
+        },
+        sizeMedium: {
+          minHeight: 40,
+        },
+        sizeSmall: {
+          minHeight: 36,
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        sizeLarge: {
+          minWidth: 44,
+          minHeight: 44,
+        },
       },
     },
     MuiCard: {

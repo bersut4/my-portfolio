@@ -87,8 +87,8 @@ const HeroSection = () => {
                 px: 2,
                 py: 0.5,
                 borderRadius: 999,
-                border: '1px solid rgba(45,212,191,0.35)',
-                backgroundColor: 'rgba(45,212,191,0.08)',
+                border: '1px solid rgba(45,212,191,0.45)',
+                backgroundColor: 'rgba(3,10,15,0.3)',
                 mb: { xs: 2, md: 3 },
                 animation: 'hero-fade-up 0.6s ease-out both',
               }}
@@ -100,6 +100,7 @@ const HeroSection = () => {
                   letterSpacing: 4,
                   lineHeight: 1,
                   fontSize: '0.7rem',
+                  textShadow: '0 1px 6px rgba(3,10,15,0.5)',
                   [`@media ${TABLET_UP_QUERY}`]: { fontSize: '0.75rem' },
                   [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '0.8rem' },
                 }}
@@ -146,7 +147,8 @@ const HeroSection = () => {
               variant="body1"
               data-hero-decor
               sx={{
-                color: 'var(--color-text-secondary)',
+                color: 'var(--color-text-primary)',
+                textShadow: '0 1px 8px rgba(3,10,15,0.55)',
                 lineHeight: 1.8,
                 maxWidth: 480,
                 mx: isMobile ? 'auto' : 0,
@@ -177,9 +179,6 @@ const HeroSection = () => {
                 onClick={() => scrollToSection('projects-section')}
                 data-hero-decor
                 sx={{
-                  px: 4,
-                  ...TOUCH_TARGET,
-                  borderRadius: 999,
                   animation: 'hero-cta-pulse 2.4s ease-out infinite',
                   transition: 'transform 0.25s ease, box-shadow 0.25s ease',
                   '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
@@ -193,9 +192,6 @@ const HeroSection = () => {
                 fullWidth={isMobile}
                 onClick={() => scrollToSection('contact-section')}
                 sx={{
-                  px: 4,
-                  ...TOUCH_TARGET,
-                  borderRadius: 999,
                   color: 'var(--color-secondary)',
                   borderColor: 'var(--color-secondary)',
                   transition: 'transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease',

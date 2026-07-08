@@ -55,13 +55,18 @@ const ProjectsSection = () => {
         <Box sx={{ textAlign: 'center' }}>
           <Button
             variant="outlined"
+            size="large"
             endIcon={<ArrowForwardIcon />}
             onClick={() => navigate('/projects')}
             sx={{
-              px: 4,
               color: 'var(--color-secondary)',
               borderColor: 'var(--color-secondary)',
-              '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(45,212,191,0.08)' },
+              transition: 'transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease',
+              '&:hover': {
+                transform: 'translateY(-3px)',
+                borderColor: 'var(--color-button-hover)',
+                backgroundColor: 'rgba(45,212,191,0.08)',
+              },
             }}
           >
             더 보기

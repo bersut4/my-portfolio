@@ -253,10 +253,14 @@ export default function GuestbookForm({ onSubmitted }) {
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2.5 }}>
           <Button
             variant="contained"
+            size="large"
             startIcon={submitting ? <CircularProgress size={16} color="inherit" /> : <SendIcon />}
             onClick={handleSubmit}
             disabled={submitting}
-            sx={{ px: 3, borderRadius: 2 }}
+            sx={{
+              transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+              '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
+            }}
           >
             {submitting ? '등록 중...' : '방명록 남기기'}
           </Button>
