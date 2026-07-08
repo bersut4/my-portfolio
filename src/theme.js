@@ -46,7 +46,13 @@ const theme = createTheme({
         },
         containedPrimary: {
           color: '#071019',
-          '&:hover': { backgroundColor: '#5EEAD4' },
+          backgroundImage: 'linear-gradient(135deg, #2DD4BF 0%, #2DD4BF 60%, #5EEAD4 100%)',
+          backgroundSize: '200% 200%',
+          backgroundPosition: '0% 50%',
+          transition: 'background-position 0.5s ease',
+          '@media (hover: hover) and (pointer: fine)': {
+            '&:hover': { backgroundPosition: '100% 50%' },
+          },
         },
         sizeLarge: {
           minHeight: 44,

@@ -9,11 +9,13 @@ import LinearProgress from '@mui/material/LinearProgress'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Fade from '@mui/material/Fade'
+import Tooltip from '@mui/material/Tooltip'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
 import { usePortfolio } from '../context/PortfolioContext'
 import { skillCategories } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
+import { buttonHoverSx, iconHoverSx } from '../utils/hoverEffects'
 
 const SkillTreeSection = () => {
   const navigate = useNavigate()
@@ -50,7 +52,9 @@ const SkillTreeSection = () => {
                         sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 0.75 }}
                       >
                         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                          <Icon sx={{ fontSize: 18, color }} />
+                          <Tooltip title={`${skill.name} · ${skill.level}%`} arrow placement="top">
+                            <Icon sx={{ fontSize: 18, color, ...iconHoverSx(color) }} />
+                          </Tooltip>
                           <Typography variant="body2" sx={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>
                             {skill.name}
                           </Typography>
@@ -91,9 +95,8 @@ const SkillTreeSection = () => {
             sx={{
               color: 'var(--color-secondary)',
               borderColor: 'var(--color-secondary)',
-              transition: 'transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease',
+              ...buttonHoverSx(),
               '&:hover': {
-                transform: 'translateY(-3px)',
                 borderColor: 'var(--color-button-hover)',
                 backgroundColor: 'rgba(45,212,191,0.08)',
               },

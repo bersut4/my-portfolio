@@ -14,6 +14,7 @@ import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
 import { usePortfolio } from '../context/PortfolioContext'
 import { MOBILE_QUERY, TABLET_UP_QUERY, DESKTOP_UP_QUERY } from '../utils/breakpoints'
+import { buttonHoverSx, imageZoomSx } from '../utils/hoverEffects'
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/bersut4/', icon: GitHubIcon, external: true },
@@ -179,8 +180,7 @@ const HeroSection = () => {
                 data-hero-decor
                 sx={{
                   animation: 'hero-cta-pulse 2.4s ease-out infinite',
-                  transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                  '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
+                  ...buttonHoverSx(),
                 }}
               >
                 프로젝트 보기
@@ -193,9 +193,8 @@ const HeroSection = () => {
                 sx={{
                   color: 'var(--color-secondary)',
                   borderColor: 'var(--color-secondary)',
-                  transition: 'transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease',
+                  ...buttonHoverSx(),
                   '&:hover': {
-                    transform: 'translateY(-3px)',
                     borderColor: 'var(--color-button-hover)',
                     backgroundColor: 'rgba(45,212,191,0.08)',
                   },
@@ -283,6 +282,7 @@ const HeroSection = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    ...imageZoomSx(),
                   }}
                 >
                   {basicInfo.photo ? (

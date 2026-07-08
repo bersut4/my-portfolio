@@ -8,6 +8,7 @@ import {
   Send as SendIcon,
 } from '@mui/icons-material'
 import { supabase } from '../../lib/supabase'
+import { buttonHoverSx } from '../../utils/hoverEffects'
 
 const EMOJI_LIST = ['😊', '🎉', '💡', '🔥', '👍', '🌟', '😎', '🤔', '❤️', '🚀']
 
@@ -257,10 +258,7 @@ export default function GuestbookForm({ onSubmitted }) {
             startIcon={submitting ? <CircularProgress size={16} color="inherit" /> : <SendIcon />}
             onClick={handleSubmit}
             disabled={submitting}
-            sx={{
-              transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-              '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
-            }}
+            sx={buttonHoverSx()}
           >
             {submitting ? '등록 중...' : '방명록 남기기'}
           </Button>

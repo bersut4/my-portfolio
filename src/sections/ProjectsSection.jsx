@@ -9,6 +9,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
 import { useProjects } from '../hooks/useProjects'
 import ProjectCard from '../components/ProjectCard'
+import { buttonHoverSx } from '../utils/hoverEffects'
 
 const ProjectsSection = () => {
   const navigate = useNavigate()
@@ -61,9 +62,8 @@ const ProjectsSection = () => {
             sx={{
               color: 'var(--color-secondary)',
               borderColor: 'var(--color-secondary)',
-              transition: 'transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease',
+              ...buttonHoverSx(),
               '&:hover': {
-                transform: 'translateY(-3px)',
                 borderColor: 'var(--color-button-hover)',
                 backgroundColor: 'rgba(45,212,191,0.08)',
               },

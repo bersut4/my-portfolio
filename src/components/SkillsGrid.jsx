@@ -23,6 +23,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import { addableSkills, skillCategories, sortByLevelDesc } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
 import { usePortfolio } from '../context/PortfolioContext'
+import { cardHoverSx, iconHoverSx, skillChipHoverSx } from '../utils/hoverEffects'
 
 const SkillCard = memo(function SkillCard({ skill, onUpdateLevel }) {
   const [displayLevel, setDisplayLevel] = useState(0)
@@ -52,13 +53,12 @@ const SkillCard = memo(function SkillCard({ skill, onUpdateLevel }) {
         sx={{
           height: '100%',
           borderTop: `3px solid ${categoryColor}`,
-          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-          '&:hover': { transform: 'translateY(-4px)', boxShadow: `0 8px 20px ${categoryColor}33` },
+          ...cardHoverSx(`${categoryColor}33`),
         }}
       >
         <CardContent sx={{ p: 3 }}>
           <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 1.5 }}>
-            <Box sx={{ color: categoryColor, display: 'flex' }}>
+            <Box sx={{ color: categoryColor, display: 'flex', ...iconHoverSx(categoryColor) }}>
               <Icon />
             </Box>
             <Typography variant="subtitle1" sx={{ color: 'var(--color-text-primary)', fontWeight: 700, flex: 1 }}>
@@ -154,7 +154,7 @@ const AddableSkillChip = memo(function AddableSkillChip({ item, onAdd }) {
         color: 'var(--color-text-primary)',
         border: '1px solid var(--color-border-dark)',
         cursor: 'pointer',
-        '&:hover': { borderColor: 'var(--color-secondary)' },
+        ...skillChipHoverSx('var(--color-secondary)'),
       }}
     />
   )

@@ -11,6 +11,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import SendIcon from '@mui/icons-material/Send'
 import { usePortfolio } from '../context/PortfolioContext'
+import { buttonHoverSx } from '../utils/hoverEffects'
 
 const CONTACT_EMAIL = 'bersut5@gmail.com'
 
@@ -133,11 +134,7 @@ const ContactSection = () => {
                 size="large"
                 endIcon={<SendIcon />}
                 onClick={handleSend}
-                sx={{
-                  alignSelf: 'flex-end',
-                  transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                  '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
-                }}
+                sx={{ alignSelf: 'flex-end', ...buttonHoverSx() }}
               >
                 보내기
               </Button>

@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import { usePortfolio } from '../context/PortfolioContext'
 import { skillCategories } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
+import { buttonHoverSx, cardHoverSx, skillChipHoverSx, imageZoomSx } from '../utils/hoverEffects'
 
 const AboutSection = () => {
   const navigate = useNavigate()
@@ -42,10 +43,7 @@ const AboutSection = () => {
               {homeContent.map((item) => (
                 <Card
                   key={item.id}
-                  sx={{
-                    '&:hover': { borderColor: 'var(--color-border-gold)', boxShadow: '0 0 20px rgba(45,212,191,0.15)' },
-                    transition: 'all 0.25s ease',
-                  }}
+                  sx={cardHoverSx('rgba(45,212,191,0.2)', { borderColor: 'var(--color-border-gold)' })}
                 >
                   <CardContent sx={{ p: 4 }}>
                     <Typography variant="h6" sx={{ color: 'var(--color-secondary)', mb: 1.5 }}>
@@ -80,6 +78,7 @@ const AboutSection = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    ...imageZoomSx(),
                   }}
                 >
                   {basicInfo.photo ? (
@@ -135,6 +134,7 @@ const AboutSection = () => {
                   color: 'var(--color-text-primary)',
                   border: `1px solid ${color}55`,
                   px: 1,
+                  ...skillChipHoverSx(color),
                 }}
               />
             )
@@ -148,10 +148,7 @@ const AboutSection = () => {
             size="large"
             endIcon={<ArrowForwardIcon />}
             onClick={() => navigate('/about')}
-            sx={{
-              transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-              '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 10px 28px rgba(45,212,191,0.35)' },
-            }}
+            sx={buttonHoverSx()}
           >
             더 알아보기
           </Button>

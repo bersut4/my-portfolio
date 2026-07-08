@@ -4,10 +4,12 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import LaunchIcon from '@mui/icons-material/Launch'
 import { getTechIcon } from '../utils/techIcons'
 import { getMobileThumbnailUrl } from '../utils/thumbnail'
+import { buttonHoverSx, imageZoomSx, skillChipHoverSx } from '../utils/hoverEffects'
 
 const ProjectCard = ({ project }) => {
   const { title, description, tech_stack: techStack = [], detail_url: detailUrl, thumbnail_url: thumbnailUrl } = project
@@ -20,11 +22,14 @@ const ProjectCard = ({ project }) => {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        willChange: 'transform',
         transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease',
-        '&:hover': {
-          transform: 'translateY(-6px) scale(1.02)',
-          boxShadow: '0 12px 32px rgba(45,212,191,0.25)',
-          borderColor: 'var(--color-border-gold)',
+        '@media (hover: hover) and (pointer: fine)': {
+          '&:hover': {
+            transform: 'translateY(-6px) scale(1.02)',
+            boxShadow: '0 12px 32px rgba(45,212,191,0.25)',
+            borderColor: 'var(--color-border-gold)',
+          },
         },
         '&:active': { transform: 'translateY(-2px) scale(0.99)' },
       }}
@@ -36,6 +41,7 @@ const ProjectCard = ({ project }) => {
         rel="noopener noreferrer"
         aria-label={`${title} 사이트 새 탭에서 열기`}
         sx={{
+          position: 'relative',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -44,7 +50,10 @@ const ProjectCard = ({ project }) => {
           py: 3,
           backgroundColor: 'var(--color-bg-primary)',
           backgroundImage: 'radial-gradient(circle at 50% 35%, rgba(45,212,191,0.10), transparent 65%)',
-          '&:hover .phone-mockup': { transform: 'translateY(-4px) scale(1.03)' },
+          '@media (hover: hover) and (pointer: fine)': {
+            '&:hover .phone-mockup': { transform: 'translateY(-4px) scale(1.03)' },
+            '&:hover .project-overlay': { opacity: 1 },
+          },
         }}
       >
         {/* 모바일 목업 프레임 */}
@@ -97,9 +106,35 @@ const ProjectCard = ({ project }) => {
                 height: '100%',
                 objectFit: 'cover',
                 objectPosition: 'top',
+                ...imageZoomSx(),
               }}
             />
           </Box>
+        </Box>
+
+        {/* 호버 시 나타나는 정보 오버레이 */}
+        <Box
+          className="project-overlay"
+          aria-hidden="true"
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            pb: 2,
+            background: 'linear-gradient(180deg, transparent 45%, rgba(7,16,25,0.88) 100%)',
+            opacity: 0,
+            transition: 'opacity 0.3s ease',
+            pointerEvents: 'none',
+          }}
+        >
+          <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center', color: 'var(--color-secondary)' }}>
+            <LaunchIcon sx={{ fontSize: 16 }} />
+            <Typography variant="caption" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
+              새 탭에서 보기
+            </Typography>
+          </Stack>
         </Box>
       </Box>
 
@@ -133,6 +168,7 @@ const ProjectCard = ({ project }) => {
                   backgroundColor: 'rgba(45,212,191,0.12)',
                   color: 'var(--color-secondary)',
                   border: '1px solid rgba(45,212,191,0.3)',
+                  ...skillChipHoverSx('rgba(45,212,191,0.9)'),
                 }}
               />
             )
@@ -151,6 +187,7 @@ const ProjectCard = ({ project }) => {
           sx={{
             color: 'var(--color-secondary)',
             borderColor: 'var(--color-secondary)',
+            ...buttonHoverSx(),
             '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(45,212,191,0.08)' },
           }}
         >
