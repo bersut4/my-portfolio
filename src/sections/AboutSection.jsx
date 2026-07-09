@@ -17,6 +17,7 @@ import { skillCategories } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
 import { buttonHoverSx, cardHoverSx, skillChipHoverSx, imageZoomSx } from '../utils/hoverEffects'
 import ScrollReveal from '../components/ScrollReveal'
+import { OCEAN_TEAL, OCEAN_TEXT } from '../utils/oceanTextColors'
 
 const AboutSection = () => {
   const navigate = useNavigate()
@@ -27,12 +28,12 @@ const AboutSection = () => {
     <Box id="about-section-home" sx={{ py: 8, scrollMarginTop: 80 }}>
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />
-          <Typography variant="overline" sx={{ color: 'var(--color-secondary)', letterSpacing: 3 }}>
+          <Box sx={{ width: 4, height: 28, backgroundColor: OCEAN_TEAL, borderRadius: 1 }} />
+          <Typography variant="overline" sx={{ color: OCEAN_TEAL, letterSpacing: 3 }}>
             ABOUT ME
           </Typography>
         </Box>
-        <Typography variant="h3" sx={{ mb: 4, color: 'var(--color-text-primary)' }}>
+        <Typography variant="h3" sx={{ mb: 4, color: OCEAN_TEXT }}>
           {basicInfo.name}
         </Typography>
 
@@ -137,7 +138,7 @@ const AboutSection = () => {
                 label={skill.name}
                 sx={{
                   backgroundColor: `${color}15`,
-                  color: 'var(--color-text-primary)',
+                  color: OCEAN_TEXT,
                   border: `1px solid ${color}55`,
                   px: 1,
                   ...skillChipHoverSx(color),

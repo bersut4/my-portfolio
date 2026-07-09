@@ -11,6 +11,7 @@ import ProjectCard from '../components/ProjectCard'
 import SkeletonCard from '../components/SkeletonCard'
 import ScrollReveal from '../components/ScrollReveal'
 import { buttonHoverSx } from '../utils/hoverEffects'
+import { OCEAN_TEAL, OCEAN_TEXT, OCEAN_TEXT_SECONDARY } from '../utils/oceanTextColors'
 
 const ProjectsSection = () => {
   const navigate = useNavigate()
@@ -20,15 +21,15 @@ const ProjectsSection = () => {
     <Box id="projects-section" sx={{ py: 8, scrollMarginTop: 80 }}>
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />
-          <Typography variant="overline" sx={{ color: 'var(--color-secondary)', letterSpacing: 3 }}>
+          <Box sx={{ width: 4, height: 28, backgroundColor: OCEAN_TEAL, borderRadius: 1 }} />
+          <Typography variant="overline" sx={{ color: OCEAN_TEAL, letterSpacing: 3 }}>
             PROJECTS
           </Typography>
         </Box>
-        <Typography variant="h3" sx={{ mb: 2, color: 'var(--color-text-primary)' }}>
+        <Typography variant="h3" sx={{ mb: 2, color: OCEAN_TEXT }}>
           Projects 섹션
         </Typography>
-        <Typography variant="body2" sx={{ color: 'var(--color-text-secondary)', mb: 4 }}>
+        <Typography variant="body2" sx={{ color: OCEAN_TEXT_SECONDARY, mb: 4 }}>
           대표 프로젝트들을 소개합니다.
         </Typography>
 

@@ -15,6 +15,7 @@ import { getSkillIcon } from '../utils/skillIcons'
 import { buttonHoverSx } from '../utils/hoverEffects'
 import AnimatedSkillBar from '../components/AnimatedSkillBar'
 import ScrollReveal from '../components/ScrollReveal'
+import { OCEAN_TEAL, OCEAN_TEXT } from '../utils/oceanTextColors'
 
 const SkillTreeSection = () => {
   const navigate = useNavigate()
@@ -24,12 +25,12 @@ const SkillTreeSection = () => {
     <Box id="skills-section" sx={{ py: 8, scrollMarginTop: 80 }}>
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />
-          <Typography variant="overline" sx={{ color: 'var(--color-secondary)', letterSpacing: 3 }}>
+          <Box sx={{ width: 4, height: 28, backgroundColor: OCEAN_TEAL, borderRadius: 1 }} />
+          <Typography variant="overline" sx={{ color: OCEAN_TEAL, letterSpacing: 3 }}>
             SKILL TREE
           </Typography>
         </Box>
-        <Typography variant="h3" sx={{ mb: 4, color: 'var(--color-text-primary)' }}>
+        <Typography variant="h3" sx={{ mb: 4, color: OCEAN_TEXT }}>
           기술 스택
         </Typography>
 

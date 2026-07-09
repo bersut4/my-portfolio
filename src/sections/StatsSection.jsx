@@ -13,6 +13,7 @@ import { useInView } from '../hooks/useInView'
 import { useCountUp } from '../hooks/useCountUp'
 import { iconHoverSx } from '../utils/hoverEffects'
 import ScrollReveal from '../components/ScrollReveal'
+import { OCEAN_TEAL, OCEAN_TEXT, OCEAN_TEXT_SECONDARY } from '../utils/oceanTextColors'
 
 const StatItem = memo(function StatItem({ icon, value, suffix, label, inView, delay }) {
   const animated = useCountUp(value, { start: inView, duration: 1400 })
@@ -20,15 +21,15 @@ const StatItem = memo(function StatItem({ icon, value, suffix, label, inView, de
   return (
     <ScrollReveal delay={delay} threshold={0.3}>
       <Box sx={{ textAlign: 'center' }}>
-        <Box sx={{ color: 'var(--color-secondary)', display: 'inline-flex', mb: 1, ...iconHoverSx() }}>{icon}</Box>
+        <Box sx={{ color: OCEAN_TEAL, display: 'inline-flex', mb: 1, ...iconHoverSx() }}>{icon}</Box>
         <Typography
           variant="h3"
-          sx={{ color: 'var(--color-text-primary)', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}
+          sx={{ color: OCEAN_TEXT, fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}
         >
           {Math.round(animated)}
           {suffix}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'var(--color-text-secondary)', mt: 0.5 }}>
+        <Typography variant="body2" sx={{ color: OCEAN_TEXT_SECONDARY, mt: 0.5 }}>
           {label}
         </Typography>
       </Box>

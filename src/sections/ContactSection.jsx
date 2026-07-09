@@ -14,6 +14,7 @@ import { usePortfolio } from '../context/PortfolioContext'
 import { buttonHoverSx } from '../utils/hoverEffects'
 import ScrollReveal from '../components/ScrollReveal'
 import { useMagnetic } from '../hooks/useMagnetic'
+import { OCEAN_TEAL, OCEAN_TEXT, OCEAN_TEXT_SECONDARY } from '../utils/oceanTextColors'
 
 const CONTACT_EMAIL = 'bersut5@gmail.com'
 
@@ -49,15 +50,15 @@ const ContactSection = () => {
     <Box id="contact-section" sx={{ py: 8, scrollMarginTop: 80 }}>
       <Container maxWidth="md">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <Box sx={{ width: 4, height: 28, backgroundColor: 'var(--color-secondary)', borderRadius: 1 }} />
-          <Typography variant="overline" sx={{ color: 'var(--color-secondary)', letterSpacing: 3 }}>
+          <Box sx={{ width: 4, height: 28, backgroundColor: OCEAN_TEAL, borderRadius: 1 }} />
+          <Typography variant="overline" sx={{ color: OCEAN_TEAL, letterSpacing: 3 }}>
             CONTACT
           </Typography>
         </Box>
-        <Typography variant="h3" sx={{ mb: 2, color: 'var(--color-text-primary)' }}>
+        <Typography variant="h3" sx={{ mb: 2, color: OCEAN_TEXT }}>
           연락하기
         </Typography>
-        <Typography variant="body2" sx={{ color: 'var(--color-text-secondary)', mb: 4 }}>
+        <Typography variant="body2" sx={{ color: OCEAN_TEXT_SECONDARY, mb: 4 }}>
           궁금한 점이나 협업 제안이 있으면 편하게 연락해주세요.
         </Typography>
 
