@@ -13,16 +13,20 @@ const theme = createTheme({
       main: '#FF8A65',
       contrastText: '#071019',
     },
+    // MUI가 팔레트 생성 시 alpha()/decomposeColor()로 실제 색상 계산에 쓰는 값들이라
+    // CSS 변수 문자열을 넣으면(파싱 불가) 런타임에 크래시가 난다 — 하드코딩 색을 유지한다.
+    // 다크/라이트 전환은 대부분의 컴포넌트가 직접 쓰는 var(--color-*) sx로 처리되고,
+    // 이 팔레트는 MUI 기본 컴포넌트의 "항상 다크" 폴백 정도의 역할만 한다.
     background: {
-      default: 'var(--color-bg-primary)',
-      paper: 'var(--color-bg-card)',
+      default: '#071019',
+      paper: '#123047',
     },
     text: {
-      primary: 'var(--color-text-primary)',
-      secondary: 'var(--color-text-secondary)',
-      disabled: 'var(--color-text-muted)',
+      primary: '#E6F1F5',
+      secondary: '#8FB8C7',
+      disabled: '#4A6572',
     },
-    divider: 'var(--color-border-dark)',
+    divider: '#16323F',
     error: { main: '#FF6B6B' },
   },
   typography: {
