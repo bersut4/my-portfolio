@@ -132,7 +132,8 @@ const ProjectCard = ({ project }) => {
             pointerEvents: 'none',
           }}
         >
-          <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center', color: 'var(--color-secondary)' }}>
+          {/* 항상 어두운 스크림(rgba(7,16,25,0.88)) 위라 테마와 무관하게 밝은 고정 색을 쓴다 */}
+          <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center', color: '#2DD4BF' }}>
             <LaunchIcon sx={{ fontSize: 16 }} />
             <Typography variant="caption" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
               새 탭에서 보기

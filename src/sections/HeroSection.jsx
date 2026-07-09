@@ -165,13 +165,18 @@ const HeroSection = () => {
                   [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '0.8rem' },
                 }}
               >
-                {basicInfo.name} · {typedRole}
-                <Box
-                  component="span"
-                  className="typewriter-cursor"
-                  sx={rolesPaused ? { animation: 'none', opacity: 1 } : undefined}
-                >
-                  |
+                {basicInfo.name} ·{' '}
+                {/* 타이핑 중 글자 수가 바뀌어도 뱃지/버튼 위치가 흔들리지 않도록 가장 긴
+                    단어 기준으로 폭을 고정해둔다. */}
+                <Box component="span" sx={{ display: 'inline-block', minWidth: '5.5em' }}>
+                  {typedRole}
+                  <Box
+                    component="span"
+                    className="typewriter-cursor"
+                    sx={rolesPaused ? { animation: 'none', opacity: 1 } : undefined}
+                  >
+                    |
+                  </Box>
                 </Box>
               </Typography>
               <Box component="span" sx={visuallyHidden}>

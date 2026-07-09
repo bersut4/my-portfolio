@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
+import { useThemeMode } from '../context/ThemeModeContext'
 
 const BUBBLES = [
   { left: '6%',  size: 10, duration: 9,   delay: 0 },
@@ -69,6 +70,8 @@ const FishSilhouette = ({ size, color }) => (
 )
 
 const OceanBackground = () => {
+  const { mode } = useThemeMode()
+  const isLight = mode === 'light'
   const oceanRef = useRef(null)
   const waveBackRef = useRef(null)
   const waveFrontRef = useRef(null)
@@ -134,9 +137,29 @@ const OceanBackground = () => {
         zIndex: 0,
         overflow: 'hidden',
         pointerEvents: 'none',
-        background: 'linear-gradient(180deg, var(--color-sky-top) 0%, var(--color-sky-bottom) 100%)',
       }}
     >
+      {/* 다크 모드(하늘이 위)와 라이트 모드(바다색이 위, 상하 반전)를 두 레이어로 겹쳐두고
+          opacity만 크로스페이드해서 테마 전환 시 색이 서서히 바뀌는 것처럼 보이게 한다.
+          linear-gradient 자체는 transition으로 부드럽게 보간되지 않아서 이 방식을 쓴다. */}
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(180deg, var(--color-sky-top) 0%, var(--color-sky-bottom) 100%)',
+          opacity: isLight ? 0 : 1,
+          transition: 'opacity 0.8s ease',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(180deg, var(--color-sky-bottom) 0%, var(--color-sky-top) 100%)',
+          opacity: isLight ? 1 : 0,
+          transition: 'opacity 0.8s ease',
+        }}
+      />
       <Box ref={oceanRef} sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: '33vh' }}>
         <Box ref={godRaysRef} sx={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
           {GOD_RAYS.map((ray, i) => (
