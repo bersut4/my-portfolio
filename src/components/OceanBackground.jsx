@@ -160,7 +160,10 @@ const OceanBackground = () => {
           transition: 'opacity 0.8s ease',
         }}
       />
-      <Box ref={oceanRef} sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: '33vh' }}>
+      {/* overflow:hidden으로 감싸서, 물고기·물방울이 물 표면(top, 스크롤에 따라 움직임)
+          위로는 절대 보이지 않고 딱 수면에서 잘리게 한다(물방울은 수면에서 "톡" 사라지는
+          효과, 물고기는 항상 물 안에서만 헤엄침). */}
+      <Box ref={oceanRef} sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: '33vh', overflow: 'hidden' }}>
         <Box ref={godRaysRef} sx={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
           {GOD_RAYS.map((ray, i) => (
             <Box
@@ -183,41 +186,41 @@ const OceanBackground = () => {
             />
           ))}
         </Box>
-      </Box>
 
-      {BUBBLES.map((bubble, i) => (
-        <Box
-          key={i}
-          data-ocean-decor
-          sx={{
-            position: 'absolute',
-            left: bubble.left,
-            bottom: '-5%',
-            width: bubble.size,
-            height: bubble.size,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.05) 70%)',
-            animation: `ocean-bubble-rise ${bubble.duration}s ease-in ${bubble.delay}s infinite backwards`,
-          }}
-        />
-      ))}
+        {BUBBLES.map((bubble, i) => (
+          <Box
+            key={i}
+            data-ocean-decor
+            sx={{
+              position: 'absolute',
+              left: bubble.left,
+              bottom: '-5%',
+              width: bubble.size,
+              height: bubble.size,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.05) 70%)',
+              animation: `ocean-bubble-rise ${bubble.duration}s ease-in ${bubble.delay}s infinite backwards`,
+            }}
+          />
+        ))}
 
-      {FISH.map((fish, i) => (
-        <Box
-          key={i}
-          data-ocean-decor
-          sx={{
-            position: 'absolute',
-            top: fish.top,
-            left: 0,
-            animation: `ocean-fish-swim-${fish.direction} ${fish.duration}s linear ${fish.delay}s infinite backwards`,
-          }}
-        >
-          <Box sx={{ transform: fish.direction === 'ltr' ? 'scaleX(-1)' : 'none' }}>
-            <FishSilhouette size={fish.size} color={fish.color} />
+        {FISH.map((fish, i) => (
+          <Box
+            key={i}
+            data-ocean-decor
+            sx={{
+              position: 'absolute',
+              top: fish.top,
+              left: 0,
+              animation: `ocean-fish-swim-${fish.direction} ${fish.duration}s linear ${fish.delay}s infinite backwards`,
+            }}
+          >
+            <Box sx={{ transform: fish.direction === 'ltr' ? 'scaleX(-1)' : 'none' }}>
+              <FishSilhouette size={fish.size} color={fish.color} />
+            </Box>
           </Box>
-        </Box>
-      ))}
+        ))}
+      </Box>
 
       <Box
         ref={waveBackRef}
