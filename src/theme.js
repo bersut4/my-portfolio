@@ -108,6 +108,20 @@ const theme = createTheme({
         },
       },
     },
+    // palette.text.primary는 alpha() 크래시 때문에 고정 dark 색으로 둘 수밖에 없어서,
+    // 입력창 글자/라벨 색은 여기서 var(--color-*)로 별도 지정해야 라이트모드에서도
+    // (흰 배경 위에 어두운 글자로) 제대로 보인다. styleOverrides는 값을 그대로
+    // CSS로 통과시킬 뿐이라 alpha() 크래시 위험이 없다.
+    MuiInputBase: {
+      styleOverrides: {
+        input: { color: 'var(--color-text-primary)' },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: { color: 'var(--color-text-secondary)' },
+      },
+    },
   },
 })
 
