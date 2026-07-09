@@ -76,7 +76,12 @@ const HeroSection = () => {
   const projectsBtnRef = useMagnetic(0.13, 80)
   const contactBtnRef = useMagnetic(0.13, 80)
   const [rolesPaused, setRolesPaused] = useState(false)
-  const typedRole = useTypewriter(ROLES, { paused: rolesPaused })
+  const typedRole = useTypewriter(ROLES, {
+    paused: rolesPaused,
+    typingSpeed: 140,
+    deletingSpeed: 70,
+    pauseDuration: 2600,
+  })
 
   return (
     <Box

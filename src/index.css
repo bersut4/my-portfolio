@@ -190,18 +190,25 @@ a:hover { color: var(--color-link-hover); }
   animation: split-char-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* 글자별로 색이 순환하며 흘러가는(움직이는 그라데이션처럼 보이는) 효과.
-   background-clip:text는 중첩된 span 구조에서 텍스트 모양대로 클립되지 않아
-   대신 색상 자체를 순환시키는 방식으로 구현한다. */
-@keyframes split-char-gradient-color {
-  0%, 100% { color: var(--color-text-primary); }
-  33%      { color: var(--color-secondary); }
-  66%      { color: var(--color-accent); }
-}
-
+/* 문장 전체가 하나로 이어지는 그라데이션처럼 보이게 하는 효과.
+   각 글자(inline-block)는 문장 전체 폭만큼 큰 그라데이션에서 자기 위치에 해당하는
+   조각만 background-position으로 보여준다(--split-offset). 위치는 고정값이라
+   글자 상자가 그라데이션 이미지 범위를 벗어나 투명해지는 일이 없다. */
 .split-char.split-char--gradient {
-  animation: split-char-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both,
-    split-char-gradient-color 3s ease-in-out infinite;
+  background-image: linear-gradient(
+    90deg,
+    var(--color-text-primary) 0%,
+    var(--color-secondary) 50%,
+    var(--color-accent) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: var(--split-total-width, 20em) 100%;
+  background-position-x: calc(var(--split-offset, 0em) * -1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: split-char-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes typewriter-blink {
@@ -221,6 +228,11 @@ a:hover { color: var(--color-link-hover); }
   .loading-spinner-ring { animation: none !important; }
   .skeleton-shimmer-block::after { animation: none !important; }
   [data-scroll-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
-  .split-char { animation: none !important; opacity: 1 !important; transform: none !important; color: var(--color-text-primary) !important; }
+  .split-char { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .split-char.split-char--gradient {
+    background: none !important;
+    color: var(--color-text-primary) !important;
+    -webkit-text-fill-color: var(--color-text-primary) !important;
+  }
   .typewriter-cursor { animation: none !important; }
 }
