@@ -15,6 +15,7 @@ import { buttonHoverSx } from '../utils/hoverEffects'
 import ScrollReveal from '../components/ScrollReveal'
 import { useMagnetic } from '../hooks/useMagnetic'
 import { OCEAN_TEAL, OCEAN_TEXT, OCEAN_TEXT_SECONDARY } from '../utils/oceanTextColors'
+import { supabase } from '../lib/supabase'
 
 const CONTACT_EMAIL = 'bersut5@gmail.com'
 
@@ -23,13 +24,14 @@ const ContactSection = () => {
   const sendBtnRef = useMagnetic(0.13, 70)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState({})
+  const [sending, setSending] = useState(false)
 
   const set = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }))
     setErrors((prev) => ({ ...prev, [field]: undefined }))
   }
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const nextErrors = {}
     if (!form.name.trim()) nextErrors.name = '이름을 입력해주세요.'
     if (!form.message.trim()) nextErrors.message = '메시지를 입력해주세요.'
@@ -38,12 +40,21 @@ const ContactSection = () => {
       return
     }
 
-    const subject = encodeURIComponent(`[포트폴리오 문의] ${form.name}님의 메시지`)
-    const body = encodeURIComponent(
-      `이름: ${form.name}\n답장 받을 이메일: ${form.email || '(작성 안 함)'}\n\n${form.message}`
-    )
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
-    notify('이메일 앱이 열립니다. 내용을 확인하고 보내주세요.')
+    setSending(true)
+    const { error } = await supabase.from('contact_messages').insert({
+      name: form.name.trim(),
+      email: form.email.trim() || null,
+      message: form.message.trim(),
+    })
+    setSending(false)
+
+    if (error) {
+      notify('메시지 전송에 실패했어요. 잠시 후 다시 시도해주세요.')
+      return
+    }
+
+    notify('메시지가 전달됐어요. 곧 확인하고 답장드릴게요!')
+    setForm({ name: '', email: '', message: '' })
   }
 
   return (
@@ -102,7 +113,7 @@ const ContactSection = () => {
               메시지 보내기
             </Typography>
             <Typography variant="caption" sx={{ display: 'block', mb: 2, color: 'var(--color-text-secondary)' }}>
-              보내기를 누르면 작성하신 내용이 담긴 이메일 앱이 열립니다.
+              작성하신 메시지는 바로 전달돼요.
             </Typography>
             <Stack spacing={2}>
               <TextField
@@ -142,9 +153,10 @@ const ContactSection = () => {
                 size="large"
                 endIcon={<SendIcon />}
                 onClick={handleSend}
+                disabled={sending}
                 sx={{ alignSelf: 'flex-end', ...buttonHoverSx() }}
               >
-                보내기
+                {sending ? '보내는 중...' : '보내기'}
               </Button>
             </Stack>
           </CardContent>
