@@ -15,6 +15,8 @@ import { useMagnetic } from '../hooks/useMagnetic'
 const ProjectCard = ({ project }) => {
   const { title, description, tech_stack: techStack = [], detail_url: detailUrl, thumbnail_url: thumbnailUrl } = project
   const mobileThumbnailUrl = getMobileThumbnailUrl(thumbnailUrl)
+  // 링크가 이미지 파일이면 배포 사이트가 아닌 디자인 작업물(예: Figma 화면 모음)이다
+  const isDesignOnly = /\.(png|jpe?g|webp|gif)$/i.test(detailUrl ?? '')
   const demoBtnRef = useMagnetic(0.15, 70)
 
   return (
@@ -41,7 +43,7 @@ const ProjectCard = ({ project }) => {
         href={detailUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`${title} 사이트 새 탭에서 열기`}
+        aria-label={`${title} ${isDesignOnly ? '디자인' : '사이트'} 새 탭에서 열기`}
         data-cursor="view"
         sx={{
           position: 'relative',
@@ -196,7 +198,7 @@ const ProjectCard = ({ project }) => {
             '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(45,212,191,0.08)' },
           }}
         >
-          Live Demo 보기
+          {isDesignOnly ? '디자인 보기' : 'Live Demo 보기'}
         </Button>
       </CardActions>
     </Card>
